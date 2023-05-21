@@ -12,13 +12,14 @@
     font-family: 'Noto Serif KR', serif !important;
 }
 
-;
 
 .title_b {
     font-family: 'Song Myung', serif !important;
 }
 
-;
+.the_first {
+    z-index: 9999;
+}
 
 /* Scroll bar */
 /* 스크롤바의 너비 */
