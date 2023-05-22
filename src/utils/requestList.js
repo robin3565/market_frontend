@@ -6,13 +6,18 @@ const clientId = process.env.REACT_APP_NAVER_CLIENT_ID;
 const clientSecret = process.env.REACT_APP_NAVER_CLIENT_SECRET;
 
 export async function naverSearchData(query) {
-    const url = 'https://openapi.naver.com/v1/search/blog?query=' + query + " 맛집";
-    const options = {
-        headers: { 'X-Naver-Client-Id': clientId, 'X-Naver-Client-Secret': clientSecret }
-    }
+  const url =
+    "https://openapi.naver.com/v1/search/blog?query=" + query + " 맛집";
+  const options = {
+    headers: {
+      "X-Naver-Client-Id": clientId,
+      "X-Naver-Client-Secret": clientSecret,
+      "Content-Type": "text/json; charset=utf-8",
+    },
+  };
 
-    const res = await axios.get(url, options);
-    console.log(res)
+  const res = await axios.get(url, options);
+  console.log(res);
 }
 
 // export async function naverSearchData(query) {
@@ -32,6 +37,6 @@ export async function naverSearchData(query) {
 
 // 댓글 데이터 필터
 export async function getCommentData(query) {
-    const data = comment.filter((item) => item["시장정보"] === query);
-    return data;
+  const data = comment.filter((item) => item["시장정보"] === query);
+  return data;
 }
