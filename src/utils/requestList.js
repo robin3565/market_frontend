@@ -11,7 +11,7 @@ export async function naverSearchData(query) {
         headers: { 'X-Naver-Client-Id': clientId, 'X-Naver-Client-Secret': clientSecret }
     }
 
-    const res = axios.get(url, options);
+    const res = await axios.get(url, options);
     console.log(res)
 }
 
