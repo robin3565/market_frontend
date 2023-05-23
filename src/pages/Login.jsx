@@ -1,9 +1,35 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../atoms/Logo";
 import axios from "axios";
+import useInputs from "../hooks/useInputs";
+import useCheckbox from "../hooks/useCheckbox";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [viewStep, setViewStep] = useState({ first: true, second: false });
+  const [inputs, handleInputChange] = useInputs({
+    id: "",
+    password: "",
+    nickname: "",
+  });
+  const [
+    { check_all, terms, privacy, subscribe },
+    handleCheckboxChange,
+    handleCheckAllChange,
+  ] = useCheckbox({
+    check_all: false,
+    terms: false,
+    privacy: false,
+    subscribe: false,
+  });
+  const [kakao_account, setKakao_account] = useState({});
+  const [auth_object, setAuth_Object] = useState({});
+
+  const [acountInfo, setAccountInfo] = useState({
+    id: "",
+    nickname: "",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,121 +41,251 @@ const Login = () => {
   }, []);
 
   const handleKakaoLogin = () => {
+    setViewStep({ first: true, second: false });
     // 카카오 로그인 처리
     window.Kakao.Auth.login({
-      success: function (authObj) {
-        console.log(authObj); // 로그인 성공 후 처리할 내용
+      success: (authObj) => {
+        console.log("카카오 로그인 성공:", authObj);
+        setAuth_Object(authObj);
+
+        // 사용자 정보 가져오기
+        window.Kakao.API.request({
+          url: "/v2/user/me",
+          success: (response) => {
+            console.log("카카오 사용자 정보:", response);
+            setAccountInfo({
+              ...acountInfo,
+              id: response?.kakao_account?.email,
+              nickname: response?.kakao_account?.email?.split("@")[0] || "",
+            });
+            setKakao_account(response);
+            setViewStep({ first: false, second: true });
+          },
+          fail: (error) => {
+            console.error("카카오 사용자 정보 가져오기 실패:", error);
+            // 실패 시 처리할 로직을 여기에 작성합니다.
+          },
+        });
       },
-      fail: function (error) {
-        console.error(error); // 로그인 실패 시 처리할 내용
+      fail: (err) => {
+        console.error("카카오 로그인 실패:", err);
+        // 로그인 실패 시 처리할 로직을 여기에 작성합니다.
       },
+      scope:
+        "profile_nickname, profile_image, account_email, gender, age_range, birthday",
     });
   };
 
-  // useEffect(() => {
-  //   // 카카오 SDK 스크립트 로드
-  //   const script = document.createElement("script");
-  //   script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-  //   script.async = true;
-  //   document.head.appendChild(script);
+  const isValidationTrue = check_all || (terms && privacy);
 
-  //   // SDK 로드 완료 시 호출되는 콜백 함수
-  //   script.onload = () => {
-  //     // 카카오 초기화
-  //     window.Kakao.init("e8d84f0e5816b2d9fbc108e4c4caf46a");
+  const handleLastLogin = async () => {
+    console.log(kakao_account);
+    console.log(auth_object);
 
-  //     // 카카오 로그인 버튼 생성
-  //     window.Kakao.Auth.createLoginButton({
-  //       container: "#kakao-login-btn",
-  //       success: (authObj) => {
-  //         // 로그인 성공 시 처리할 로직
-  //         console.log("로그인 성공:", authObj);
-  //         // 여기서 서버로 사용자 정보를 전달하거나 필요한 작업을 수행할 수 있습니다.
-  //       },
-  //       fail: (err) => {
-  //         // 로그인 실패 시 처리할 로직
-  //         console.error("로그인 실패:", err);
-  //       },
-  //     });
-  //   };
-
-  //   // 컴포넌트 언마운트 시 카카오 SDK 스크립트 제거
-  //   return () => {
-  //     document.head.removeChild(script);
-  //   };
-  // }, []);
+    if (isValidationTrue) {
+      sessionStorage.setItem("access_token", auth_object?.access_token);
+      sessionStorage.setItem("refresh_token", auth_object?.refresh_token);
+      navigate("/");
+      alert("로그인 완료");
+    } else {
+      alert("필수 약관에 동의해주세요!");
+      return;
+    }
+  };
 
   return (
     <>
-      <div className="md:w-1/4 w-full flex-col justify-center items-center">
-        <div className="flex items-center justify-center">{/* <Logo/> */}</div>
+      {/* Component 01 */}
+      {viewStep.first && (
+        <>
+          <div className="md:w-1/3 lg:w-1/4 w-full flex-col justify-center items-center">
+            <div className="flex items-center justify-center mb-5">
+              <Logo size={"big"} />
+            </div>
 
-        <div className="flex items-center justify-center w-full mb-5 h-12 rounded-lg">
-          <button onClick={handleKakaoLogin}>카카오 로그인</button>
-        </div>
+            <div className="flex items-center justify-center w-full mb-5 h-12 rounded-lg bg-kakao font-semibold">
+              <button className="w-full" onClick={handleKakaoLogin}>
+                카카오로 시작하기
+              </button>
+            </div>
 
-        <div className="h-0.5">
-          <div className="bg-prigray-300 h-full"></div>
-        </div>
+            <div className="h-0.5">
+              <div className="bg-prigray-300 h-full"></div>
+            </div>
 
-        <div className="mt-6">
-          <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
+            <div className="mt-6">
+              <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
+                <div>
+                  <div className="mt-2">
+                    <input
+                      id="id"
+                      name="id"
+                      type="id"
+                      value={inputs.id}
+                      autoComplete="id"
+                      placeholder="아이디"
+                      required
+                      className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1 ring-inset 
+                    ring-gray-300 placeholder:text-gray-400"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mt-2">
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      placeholder="비밀번호"
+                      required
+                      value={inputs.password}
+                      className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
+                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="mt-3 flex items-center justify-between">
+                    <div className="">
+                      <a href="/forgot" className="font-semibold underline">
+                        비밀번호를 잊으셨나요?
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    className="flex w-full justify-center rounded-md bg-primary-500 px-3 py-3
+                   font-semibold leading-6 text-white shadow-sm hover:bg-primary-400
+                    focus-visible:outline focus-visible:outline-2
+                     focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+                  >
+                    로그인
+                  </button>
+                </div>
+              </form>
+              <div className="mt-4 flex items-center justify-center">
+                <a
+                  href="/signup"
+                  className="font-semibold underline flex items-center justify-center"
+                >
+                  회원가입하기
+                </a>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+      {/* Component 02 */}
+      {viewStep?.second && (
+        <>
+          <div className="md:w-1/3 lg:w-1/4 w-full flex-col justify-center items-center">
+            <div className="flex items-center justify-center mb-5">
+              <Logo size={"big"} />
+            </div>
             <div>
               <div className="mt-2">
                 <input
                   id="id"
                   name="id"
-                  type="id"
-                  autoComplete="id"
-                  placeholder="아이디"
-                  required
-                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1 ring-inset 
-                    ring-gray-300 placeholder:text-gray-400"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder="비밀번호"
-                  required
+                  type="text"
+                  disabled={true}
+                  value={acountInfo.id}
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
-              <div className="mt-3 flex items-center justify-between">
-                <div className="">
-                  <a href="/forgot" className="font-semibold underline">
-                    비밀번호를 잊으셨나요?
-                  </a>
-                </div>
+              <div className="mt-2">
+                <input
+                  id="nickname"
+                  name="nickname"
+                  type="text"
+                  value={acountInfo.nickname}
+                  autoComplete="nickname"
+                  placeholder="닉네임"
+                  required
+                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
+                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
 
-            <div>
+            {/* 동의하기 */}
+            <div className="mt-5">
+              <div className="py-0.5">
+                <input
+                  type="checkbox"
+                  id="check_all"
+                  name="check_all"
+                  checked={check_all}
+                  className="accent-blue-600"
+                  onChange={handleCheckAllChange}
+                />
+                <label for="check_all" className="ml-1.5">
+                  모두 동의합니다
+                </label>
+              </div>
+              <div className="py-0.5">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  name="terms"
+                  checked={terms}
+                  className="accent-blue-600"
+                  onChange={handleCheckboxChange}
+                />
+                <label for="terms" className="ml-1.5">
+                  이용약관 동의 (필수)
+                </label>
+              </div>
+              <div className="py-0.5">
+                <input
+                  type="checkbox"
+                  id="privacy"
+                  name="privacy"
+                  checked={privacy}
+                  className="accent-blue-600"
+                  onChange={handleCheckboxChange}
+                />
+                <label for="privacy" className="ml-1.5">
+                  개인정보 수집/이용 동의 (필수)
+                </label>
+              </div>
+              <div className="py-0.5">
+                <input
+                  type="checkbox"
+                  id="subscribe"
+                  name="subscribe"
+                  checked={subscribe}
+                  className="accent-blue-600"
+                  onChange={handleCheckboxChange}
+                />
+                <label for="subscribe" className="ml-1.5">
+                  뉴스레터 및 마케팅 정보 수신 동의 (선택)
+                </label>
+              </div>
+            </div>
+            <div className="mt-5">
               <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-primary-500 px-3 py-3
-                   font-semibold leading-6 text-white shadow-sm hover:bg-primary-400
+                type="button"
+                disabled={!isValidationTrue}
+                className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-3
+                   font-semibold leading-6 text-white shadow-sm hover:bg-blue-500
                     focus-visible:outline focus-visible:outline-2
-                     focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+                     focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-prigray-400"
+                onClick={handleLastLogin}
               >
-                로그인
+                가입하기
               </button>
             </div>
-          </form>
-          <div className="mt-4 flex items-center justify-center">
-            <a className="font-semibold underline flex items-center justify-center">
-              회원가입하기
-            </a>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };

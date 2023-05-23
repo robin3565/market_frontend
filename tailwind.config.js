@@ -25,6 +25,7 @@ module.exports = {
           600: "#4E4E4E",
         },
         tblack: "#212121",
+        kakao: "#FEE500"
       },
       width: {
         "1/12": "8.333333%",
