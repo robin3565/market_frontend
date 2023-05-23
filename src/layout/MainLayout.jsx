@@ -7,10 +7,10 @@ const MainLayout = () => {
   return (
     <div>
       <Navbar />
-      <div>
+      <div className="h-full">
         <Outlet />
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

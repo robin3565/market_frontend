@@ -8,20 +8,32 @@ import Market from "../pages/Market";
 import MainLayout from "../layout/MainLayout";
 import Yangdong from "../pages/Yangdong";
 import Curation from "../pages/Curation";
-import Basic from "../pages/Basic";
+import Forgot from "../pages/Forgot";
 import Login from "../pages/Login";
+import AuthLayout from "../layout/AuthLayout";
+import Signup from "../pages/Signup";
 
 const Routers = ({ mapInit, saveMapInit, myLocation }) => {
   return (
     <Routes>
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot" element={<Forgot />} />
+      </Route>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
         {/* <Route path="/curation" element={<Curation />} /> */}
         <Route path="/curation" element={<Yangdong />} />
       </Route>
       <Route
-        element={<MapLayout saveMapInit={saveMapInit} mapInit={mapInit} myLocation={myLocation} />}
+        element={
+          <MapLayout
+            saveMapInit={saveMapInit}
+            mapInit={mapInit}
+            myLocation={myLocation}
+          />
+        }
       >
         <Route path="/map" element={<Map mapInit={mapInit} />} />
         <Route path="/map/:id" element={<Geo mapInit={mapInit} />} />

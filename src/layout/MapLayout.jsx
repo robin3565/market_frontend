@@ -112,7 +112,6 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation }) => {
       };
 
       var zoomControl = new naver.maps.ZoomControl();
-      console.log(zoomControl)
 
       const map = new naver.maps.Map(mapElement.current, mapOptions);
       saveMapInit(map);

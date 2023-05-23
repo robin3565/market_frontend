@@ -1,91 +1,133 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Logo from "../atoms/Logo";
+import axios from "axios";
 
 const Login = () => {
+  const [viewStep, setViewStep] = useState({ first: true, second: false });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    // 카카오 SDK 초기화
+    window.Kakao.init("e8d84f0e5816b2d9fbc108e4c4caf46a");
+  }, []);
+
+  const handleKakaoLogin = () => {
+    // 카카오 로그인 처리
+    window.Kakao.Auth.login({
+      success: function (authObj) {
+        console.log(authObj); // 로그인 성공 후 처리할 내용
+      },
+      fail: function (error) {
+        console.error(error); // 로그인 실패 시 처리할 내용
+      },
+    });
+  };
+
+  // useEffect(() => {
+  //   // 카카오 SDK 스크립트 로드
+  //   const script = document.createElement("script");
+  //   script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+  //   script.async = true;
+  //   document.head.appendChild(script);
+
+  //   // SDK 로드 완료 시 호출되는 콜백 함수
+  //   script.onload = () => {
+  //     // 카카오 초기화
+  //     window.Kakao.init("e8d84f0e5816b2d9fbc108e4c4caf46a");
+
+  //     // 카카오 로그인 버튼 생성
+  //     window.Kakao.Auth.createLoginButton({
+  //       container: "#kakao-login-btn",
+  //       success: (authObj) => {
+  //         // 로그인 성공 시 처리할 로직
+  //         console.log("로그인 성공:", authObj);
+  //         // 여기서 서버로 사용자 정보를 전달하거나 필요한 작업을 수행할 수 있습니다.
+  //       },
+  //       fail: (err) => {
+  //         // 로그인 실패 시 처리할 로직
+  //         console.error("로그인 실패:", err);
+  //       },
+  //     });
+  //   };
+
+  //   // 컴포넌트 언마운트 시 카카오 SDK 스크립트 제거
+  //   return () => {
+  //     document.head.removeChild(script);
+  //   };
+  // }, []);
+
   return (
     <>
-      <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            class="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
-          <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
+      <div className="md:w-1/4 w-full flex-col justify-center items-center">
+        <div className="flex items-center justify-center">{/* <Logo/> */}</div>
+
+        <div className="flex items-center justify-center w-full mb-5 h-12 rounded-lg">
+          <button onClick={handleKakaoLogin}>카카오 로그인</button>
         </div>
 
-        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form class="space-y-6" action="#" method="POST">
+        <div className="h-0.5">
+          <div className="bg-prigray-300 h-full"></div>
+        </div>
+
+        <div className="mt-6">
+          <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
             <div>
-              <label
-                for="email"
-                class="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div class="mt-2">
+              <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autocomplete="email"
+                  id="id"
+                  name="id"
+                  type="id"
+                  autoComplete="id"
+                  placeholder="아이디"
                   required
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-          focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1 ring-inset 
+                    ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
             </div>
 
             <div>
-              <div class="flex items-center justify-between">
-                <label
-                  for="password"
-                  class="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-                <div class="text-sm">
-                  <a
-                    href="#"
-                    class="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-              <div class="mt-2">
+              <div className="mt-2">
                 <input
                   id="password"
                   name="password"
                   type="password"
-                  autocomplete="current-password"
+                  autoComplete="current-password"
+                  placeholder="비밀번호"
                   required
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
-           ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
+                     ring-inset ring-gray-300 placeholder:text-gray-400"
                 />
+              </div>
+              <div className="mt-3 flex items-center justify-between">
+                <div className="">
+                  <a href="/forgot" className="font-semibold underline">
+                    비밀번호를 잊으셨나요?
+                  </a>
+                </div>
               </div>
             </div>
 
             <div>
               <button
                 type="submit"
-                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-primary-500 px-3 py-3
+                   font-semibold leading-6 text-white shadow-sm hover:bg-primary-400
+                    focus-visible:outline focus-visible:outline-2
+                     focus-visible:outline-offset-2 focus-visible:outline-primary-500"
               >
-                Sign in
+                로그인
               </button>
             </div>
           </form>
-
-          <p class="mt-10 text-center text-sm text-gray-500">
-            Not a member?
-            <a
-              href="#"
-              class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-            >
-              Start a 14 day free trial
+          <div className="mt-4 flex items-center justify-center">
+            <a className="font-semibold underline flex items-center justify-center">
+              회원가입하기
             </a>
-          </p>
+          </div>
         </div>
       </div>
     </>
