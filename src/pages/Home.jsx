@@ -33,7 +33,7 @@ Get started
         </div>
       </div>
       {/* 큐레이션 미리보기 */}
-      <div className="w-full mb-20">
+      <div className="w-full mb-10">
         <div className="mx-auto sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl">
           <div className="border-b border-prigray-300 mt-10">
             <p className="text-2xl font-semibold mb-3 ml-3">큐레이션</p>

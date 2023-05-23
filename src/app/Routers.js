@@ -9,12 +9,14 @@ import MainLayout from "../layout/MainLayout";
 import Yangdong from "../pages/Yangdong";
 import Curation from "../pages/Curation";
 import Basic from "../pages/Basic";
+import Login from "../pages/Login";
 
 const Routers = ({ mapInit, saveMapInit, myLocation }) => {
   return (
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         {/* <Route path="/curation" element={<Curation />} /> */}
         <Route path="/curation" element={<Yangdong />} />
       </Route>
