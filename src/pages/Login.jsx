@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../atoms/Logo";
-import axios from "axios";
 import useInputs from "../hooks/useInputs";
 import useCheckbox from "../hooks/useCheckbox";
 import { useNavigate } from "react-router-dom";
@@ -103,78 +102,86 @@ const Login = () => {
               <Logo size={"big"} />
             </div>
 
-            <div className="flex items-center justify-center w-full mb-5 h-12 rounded-lg bg-kakao font-semibold">
-              <button className="w-full" onClick={handleKakaoLogin}>
-                카카오로 시작하기
-              </button>
-            </div>
+            <div className="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+              <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <div className="flex items-center justify-center w-full mb-5 h-12 rounded-lg bg-kakao font-semibold">
+                  <button className="w-full" onClick={handleKakaoLogin}>
+                    카카오로 시작하기
+                  </button>
+                </div>
 
-            <div className="h-0.5">
-              <div className="bg-prigray-300 h-full"></div>
-            </div>
+                <div className="h-0.5">
+                  <div className="bg-prigray-300 h-full"></div>
+                </div>
 
-            <div className="mt-6">
-              <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
-                <div>
-                  <div className="mt-2">
-                    <input
-                      id="id"
-                      name="id"
-                      type="id"
-                      value={inputs.id}
-                      autoComplete="id"
-                      placeholder="아이디"
-                      required
-                      className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1 ring-inset 
+                <div className="mt-6">
+                  <form
+                    className="space-y-6"
+                    method="POST"
+                    onSubmit={handleSubmit}
+                  >
+                    <div>
+                      <div className="mt-2">
+                        <input
+                          id="id"
+                          name="id"
+                          type="id"
+                          value={inputs.id}
+                          autoComplete="id"
+                          placeholder="아이디"
+                          required
+                          className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1 ring-inset 
                     ring-gray-300 placeholder:text-gray-400"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="mt-2">
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      autoComplete="current-password"
-                      placeholder="비밀번호"
-                      required
-                      value={inputs.password}
-                      className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="mt-3 flex items-center justify-between">
-                    <div className="">
-                      <a href="/forgot" className="font-semibold underline">
-                        비밀번호를 잊으셨나요?
-                      </a>
+                          onChange={handleInputChange}
+                        />
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div>
-                  <button
-                    type="submit"
-                    className="flex w-full justify-center rounded-md bg-primary-500 px-3 py-3
+                    <div>
+                      <div className="mt-2">
+                        <input
+                          id="password"
+                          name="password"
+                          type="password"
+                          autoComplete="current-password"
+                          placeholder="비밀번호"
+                          required
+                          value={inputs.password}
+                          className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
+                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                      <div className="mt-3 flex items-center justify-between">
+                        <div className="">
+                          <a href="/forgot" className="font-semibold underline">
+                            비밀번호를 잊으셨나요?
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <button
+                        type="submit"
+                        className="flex w-full justify-center rounded-md bg-primary-500 px-3 py-3
                    font-semibold leading-6 text-white shadow-sm hover:bg-primary-400
                     focus-visible:outline focus-visible:outline-2
                      focus-visible:outline-offset-2 focus-visible:outline-primary-500"
-                  >
-                    로그인
-                  </button>
+                      >
+                        로그인
+                      </button>
+                    </div>
+                  </form>
+                  <div className="mt-4 flex items-center justify-center">
+                    <a
+                      href="/signup"
+                      className="font-semibold underline flex items-center justify-center"
+                    >
+                      회원가입하기
+                    </a>
+                  </div>
                 </div>
-              </form>
-              <div className="mt-4 flex items-center justify-center">
-                <a
-                  href="/signup"
-                  className="font-semibold underline flex items-center justify-center"
-                >
-                  회원가입하기
-                </a>
               </div>
             </div>
           </div>

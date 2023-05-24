@@ -2,24 +2,6 @@ import axios from "axios";
 import { comment } from "../json/comment";
 
 // naver 블로그 API
-const clientId = process.env.REACT_APP_NAVER_CLIENT_ID;
-const clientSecret = process.env.REACT_APP_NAVER_CLIENT_SECRET;
-
-// export async function naverSearchData(query) {
-//   const url =
-//     "https://openapi.naver.com/v1/search/blog?query=" + query + " 맛집";
-//   const options = {
-//     headers: {
-//       "X-Naver-Client-Id": clientId,
-//       "X-Naver-Client-Secret": clientSecret,
-//       "Content-Type": "text/json; charset=utf-8",
-//     },
-//   };
-
-//   const res = await axios.get(url, options);
-//   console.log(res);
-// }
-
 export async function naverSearchData(query) {
     try {
         const response = await axios.get('http://localhost:3005/search/blog', {
