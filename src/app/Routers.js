@@ -15,6 +15,7 @@ import {
   Signup,
   Gwangju,
 } from "../pages";
+import CurationLayout from "../layout/CurationLayout";
 
 const Routers = ({ mapInit, saveMapInit, myLocation }) => {
   return (
@@ -26,8 +27,10 @@ const Routers = ({ mapInit, saveMapInit, myLocation }) => {
       </Route>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/curation" element={<Curation />} /> */}
-        <Route path="/curation" element={<Yangdong />} />
+        <Route path="/curation" element={<Curation />} />
+      </Route>
+      <Route element={<CurationLayout />}>
+        <Route path="/curation/yangdong" element={<Yangdong />} />
         <Route path="/curation/gwangju" element={<Gwangju />} />
       </Route>
       <Route

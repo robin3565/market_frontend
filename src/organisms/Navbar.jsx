@@ -7,19 +7,18 @@ const Navbar = () => {
   const location = useLocation();
   const [view, setView] = useState(false);
   const path = location.pathname.split("/")[1];
-
   const handleViewNavBar = () => {
     setView((view) => !view);
   };
 
   return (
     <header
-      className={`border-prigray-300 border-b h-7/100 ${
-        path !== "map" && "fixed left-0 top-0 w-full z-50 bg-white"
-      } `}
+      className={`border-prigray-300 border-b  ${
+        path !== "map" ? "fixed left-0 top-0 w-full z-50 bg-white" : "h-7/100"
+      }`}
     >
       <nav className="bg-white border-gray-200 dark:bg-gray-900 text-tblack">
-        <div className="flex justify-between max-w-screen-xl flex flex-wrap items-center mx-auto">
+        <div className="flex justify-between max-w-screen-xl flex-wrap items-center mx-auto">
           <div className="p-5 grow">
             <Logo />
           </div>
@@ -29,7 +28,7 @@ const Navbar = () => {
               className="text-white bg-blue-700 
             hover:bg-blue-800 font-medium rounded-lg 
             text-sm px-4 py-2 text-center my-2.5 md:my-0 md:mr-0 
-            dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text items-center justify-center"
+            dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text flex items-center justify-center"
             >
               로그인
             </a>
@@ -56,7 +55,7 @@ const Navbar = () => {
                   fill-rule="evenodd"
                   d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
                   clip-rule="evenodd"
-                ></path>
+                />
               </svg>
             </button>
           </div>
@@ -64,7 +63,7 @@ const Navbar = () => {
           <div
             className={`${
               view ? "" : "hidden"
-            } w-full items-center justify-between w-full md:flex md:w-auto md:order-1 the_first `}
+            } w-full items-center justify-between md:flex md:w-auto md:order-1 the_first `}
           >
             <div className="px-5 pb-5 md:pb-0 bg-white">
               <ul
