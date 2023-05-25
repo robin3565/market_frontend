@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Logo from "../atoms/Logo";
-import useInputs from "../hooks/useInputs";
-import useCheckbox from "../hooks/useCheckbox";
+import Logo from "../../atoms/Logo";
+import useInputs from "../../hooks/useInputs";
+import useCheckbox from "../../hooks/useCheckbox";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {

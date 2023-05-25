@@ -58,10 +58,10 @@ Get started
                       <div className="text-center text-white px-6 md:px-12">
                         <div className="title_a">
                           <p className="text-3xl md:text-4xl font-bold tracking-tight mb-2.5">
-                            광주
+                            5월의 시장
                           </p>
                           <p className="text-5xl md:text-6xl font-bold tracking-tight">
-                            양동시장
+                            광주
                           </p>
                         </div>
                       </div>
@@ -88,10 +88,10 @@ Get started
                     <div className="text-center text-white px-6 md:px-12">
                       <div className="title_b">
                         <p className="text-3xl md:text-4xl font-bold tracking-tight mb-2.5">
-                          광주
+                          6월의 시장
                         </p>
                         <p className="text-5xl md:text-6xl font-bold tracking-tight">
-                          말바우시장
+                          부산
                         </p>
                       </div>
                     </div>

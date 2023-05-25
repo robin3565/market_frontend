@@ -1,17 +1,20 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MapLayout from "../layout/MapLayout";
-import Home from "../pages/Home";
-import Map from "../pages/Map";
-import Geo from "../pages/Geo";
-import Market from "../pages/Market";
 import MainLayout from "../layout/MainLayout";
-import Yangdong from "../pages/Yangdong";
-import Curation from "../pages/Curation";
-import Forgot from "../pages/Forgot";
-import Login from "../pages/Login";
 import AuthLayout from "../layout/AuthLayout";
-import Signup from "../pages/Signup";
+import {
+  Home,
+  Map,
+  Geo,
+  Market,
+  Yangdong,
+  Curation,
+  Forgot,
+  Login,
+  Signup,
+  Gwangju,
+} from "../pages";
 
 const Routers = ({ mapInit, saveMapInit, myLocation }) => {
   return (
@@ -25,6 +28,7 @@ const Routers = ({ mapInit, saveMapInit, myLocation }) => {
         <Route path="/" element={<Home />} />
         {/* <Route path="/curation" element={<Curation />} /> */}
         <Route path="/curation" element={<Yangdong />} />
+        <Route path="/curation/gwangju" element={<Gwangju />} />
       </Route>
       <Route
         element={

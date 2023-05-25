@@ -1,6 +1,6 @@
 import React from "react";
-import Logo from "../atoms/Logo";
-import useCheckbox from "../hooks/useCheckbox";
+import Logo from "../../atoms/Logo";
+import useCheckbox from "../../hooks/useCheckbox";
 import { useForm } from "react-hook-form";
 
 const Signup = () => {
