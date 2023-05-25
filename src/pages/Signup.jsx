@@ -1,15 +1,15 @@
 import React from "react";
 import Logo from "../atoms/Logo";
-import useInputs from "../hooks/useInputs";
 import useCheckbox from "../hooks/useCheckbox";
+import { useForm } from "react-hook-form";
 
 const Signup = () => {
-  const [inputs, handleInputChange] = useInputs({
-    id: "",
-    password: "",
-    password_confirm: "",
-    nickname: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { isSubmitting, isDirty, errors },
+  } = useForm();
   const [
     { check_all, terms, privacy, subscribe },
     handleCheckboxChange,
@@ -23,21 +23,29 @@ const Signup = () => {
 
   const isValidationTrue = check_all || (terms && privacy);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  };
-
   return (
     <div className="w-full flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
       <div className="flex items-center justify-center mb-5">
-        <Logo size={"big"} />
+        {/* <Logo size={"big"} /> */}
       </div>
       <div className="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <form
             className="space-y-4 md:space-y-6"
             action="#"
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit((data) => {
+              try {
+                if (data.password !== data.password_confirm) {
+                  setError(
+                    "password_confirm",
+                    { message: "비밀번호가 일치하지 않습니다." },
+                    { shouldFocus: true }
+                  );
+                }
+              } catch (e) {
+                console.log(e);
+              }
+            })}
           >
             <div>
               <div className="mt-1">
@@ -45,14 +53,22 @@ const Signup = () => {
                   id="id"
                   name="id"
                   type="id"
-                  value={inputs.id}
                   autoComplete="id"
                   placeholder="아이디"
-                  required
+                  aria-invalid={
+                    !isDirty ? undefined : errors.id ? "true" : "false"
+                  }
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1 ring-inset 
                     ring-gray-300 placeholder:text-gray-400"
-                  onChange={handleInputChange}
+                  {...register("id", {
+                    required: "아이디는 필수 입력입니다.",
+                    pattern: {
+                      value: /^[a-zA-Z0-9]+$/,
+                      message: "아이디는 영문자와 숫자로만 이루어져야 합니다.",
+                    },
+                  })}
                 />
+                {errors.id && <small role="alert">{errors.id.message}</small>}
               </div>
             </div>
 
@@ -64,12 +80,27 @@ const Signup = () => {
                   type="password"
                   autoComplete="current-password"
                   placeholder="비밀번호 (8자 이상)"
-                  required
-                  value={inputs.password}
+                  aria-invalid={
+                    !isDirty ? undefined : errors.password ? "true" : "false"
+                  }
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
-                  onChange={handleInputChange}
+                  {...register("password", {
+                    required: "비밀번호는 필수 입력입니다.",
+                    pattern: {
+                      value: /^[a-zA-Z0-9]+$/,
+                      message:
+                        "비밀번호는 영문자와 숫자로만 이루어져야 합니다.",
+                    },
+                    minLength: {
+                      value: 8,
+                      message: "비밀번호는 8자리 이상 입력해주세요.",
+                    },
+                  })}
                 />
+                {errors.password && (
+                  <small role="alert">{errors.password.message}</small>
+                )}
               </div>
             </div>
             <div>
@@ -77,16 +108,18 @@ const Signup = () => {
                 <input
                   id="password_confirm"
                   name="password_confirm"
-                  type="password_confirm"
+                  type="password"
                   autoComplete="current-password-confirm"
                   placeholder="비밀번호 확인 (8자 이상)"
                   required
-                  value={inputs.password_confirm}
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
-                  onChange={handleInputChange}
+                  {...register("password_confirm")}
                 />
               </div>
+              {errors.password_confirm && (
+                <small role="alert">{errors.password_confirm.message}</small>
+              )}
             </div>
             <div>
               <div className="mt-1">
@@ -97,10 +130,23 @@ const Signup = () => {
                   autoComplete="current-nickname"
                   placeholder="닉네임"
                   required
-                  value={inputs.password}
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
-                  onChange={handleInputChange}
+                  {...register("nickname")}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="current-email"
+                  placeholder="이메일 (선택)"
+                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
+                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                  {...register("email")}
                 />
               </div>
             </div>
@@ -116,7 +162,7 @@ const Signup = () => {
                   className="accent-blue-600"
                   onChange={handleCheckAllChange}
                 />
-                <label for="check_all" className="ml-1.5">
+                <label htmlFor="check_all" className="ml-1.5">
                   모두 동의합니다
                 </label>
               </div>
@@ -129,7 +175,7 @@ const Signup = () => {
                   className="accent-blue-600"
                   onChange={handleCheckboxChange}
                 />
-                <label for="terms" className="ml-1.5">
+                <label htmlFor="terms" className="ml-1.5">
                   이용약관 동의 (필수)
                 </label>
               </div>
@@ -142,7 +188,7 @@ const Signup = () => {
                   className="accent-blue-600"
                   onChange={handleCheckboxChange}
                 />
-                <label for="privacy" className="ml-1.5">
+                <label htmlFor="privacy" className="ml-1.5">
                   개인정보 수집/이용 동의 (필수)
                 </label>
               </div>
@@ -155,7 +201,7 @@ const Signup = () => {
                   className="accent-blue-600"
                   onChange={handleCheckboxChange}
                 />
-                <label for="subscribe" className="ml-1.5">
+                <label htmlFor="subscribe" className="ml-1.5">
                   뉴스레터 및 마케팅 정보 수신 동의 (선택)
                 </label>
               </div>

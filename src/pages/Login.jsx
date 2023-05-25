@@ -10,7 +10,6 @@ const Login = () => {
   const [inputs, handleInputChange] = useInputs({
     id: "",
     password: "",
-    nickname: "",
   });
   const [
     { check_all, terms, privacy, subscribe },
@@ -25,7 +24,7 @@ const Login = () => {
   const [kakao_account, setKakao_account] = useState({});
   const [auth_object, setAuth_Object] = useState({});
 
-  const [acountInfo, setAccountInfo] = useState({
+  const [accountInfo, setAccountInfo] = useState({
     id: "",
     nickname: "",
   });
@@ -53,7 +52,7 @@ const Login = () => {
           success: (response) => {
             console.log("카카오 사용자 정보:", response);
             setAccountInfo({
-              ...acountInfo,
+              ...accountInfo,
               id: response?.kakao_account?.email,
               nickname: response?.kakao_account?.email?.split("@")[0] || "",
             });
@@ -201,7 +200,7 @@ const Login = () => {
                   name="id"
                   type="text"
                   disabled={true}
-                  value={acountInfo.id}
+                  value={accountInfo.id}
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
                 />
@@ -211,13 +210,13 @@ const Login = () => {
                   id="nickname"
                   name="nickname"
                   type="text"
-                  value={acountInfo.nickname}
+                  value={accountInfo.nickname}
                   autoComplete="nickname"
                   placeholder="닉네임"
                   required
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
-                  onChange={handleInputChange}
+                  onChange={(e) => setAccountInfo({...accountInfo, nickname: e.target.value})}
                 />
               </div>
             </div>
