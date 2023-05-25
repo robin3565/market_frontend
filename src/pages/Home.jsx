@@ -40,7 +40,7 @@ Get started
           </div>
           <div className="mx-5">
             {/* 큐레이션 아이템 01 */}
-            <Link to="/curation">
+            <Link to="/curation/gwangju">
               <div className="mt-8">
                 <div
                   className="relative overflow-hidden bg-no-repeat bg-cover"

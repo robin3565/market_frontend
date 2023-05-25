@@ -98,7 +98,7 @@ const Login = () => {
         <>
           <div className="md:w-1/3 lg:w-1/4 w-full flex-col justify-center items-center">
             <div className="flex items-center justify-center mb-5">
-              <Logo size={"big"} />
+              <h3 className="font-bold text-3xl">로그인</h3>
             </div>
 
             <div className="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
