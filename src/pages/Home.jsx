@@ -36,7 +36,7 @@ Get started
       <div className="w-full mb-10">
         <div className="mx-auto sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl">
           <div className="border-b border-prigray-300 mt-10">
-            <p className="text-2xl font-semibold mb-3 ml-3">큐레이션</p>
+            <p className="text-2xl font-semibold mb-3 ml-3">월간 시장</p>
           </div>
           <div className="mx-5">
             {/* 큐레이션 아이템 01 */}
@@ -58,7 +58,7 @@ Get started
                       <div className="text-center text-white px-6 md:px-12">
                         <div className="title_a">
                           <p className="text-3xl md:text-4xl font-bold tracking-tight mb-2.5">
-                            5월의 시장
+                            6월의 시장
                           </p>
                           <p className="text-5xl md:text-6xl font-bold tracking-tight">
                             광주
@@ -88,10 +88,10 @@ Get started
                     <div className="text-center text-white px-6 md:px-12">
                       <div className="title_b">
                         <p className="text-3xl md:text-4xl font-bold tracking-tight mb-2.5">
-                          6월의 시장
+                          7월의 시장
                         </p>
                         <p className="text-5xl md:text-6xl font-bold tracking-tight">
-                          부산
+                          coming soon
                         </p>
                       </div>
                     </div>

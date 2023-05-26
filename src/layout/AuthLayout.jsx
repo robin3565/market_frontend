@@ -2,15 +2,15 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Logo from "../atoms/Logo";
 
-const AuthLayout = () => {
+const AuthLayout = ({ login }) => {
   return (
-    <div>
-      <header className="flex justify-between max-w-screen-xl flex flex-wrap items-center mx-auto">
-        <div className="pt-5 px-5 grow">
+    <div className="bg-gray-50"> 
+      <header className="flex justify-between max-w-screen-xl flex-wrap items-center mx-auto">
+        <div className="p-5 grow">
           <Logo />
         </div>
       </header>
-      <section className="flex w-full h-screen flex-col justify-center items-center my-auto mx-auto bg-gray-50 dark:bg-gray-900">
+      <section className="w-full h-screen my-auto mx-auto dark:bg-gray-900 flex flex-col justify-center items-center">
         <Outlet />
       </section>
     </div>

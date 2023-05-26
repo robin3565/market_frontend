@@ -3,6 +3,7 @@ import Logo from "../../atoms/Logo";
 import useInputs from "../../hooks/useInputs";
 import useCheckbox from "../../hooks/useCheckbox";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -83,10 +84,11 @@ const Login = () => {
     if (isValidationTrue) {
       sessionStorage.setItem("access_token", auth_object?.access_token);
       sessionStorage.setItem("refresh_token", auth_object?.refresh_token);
+      sessionStorage.setItem("login_status", "Y");
       navigate("/");
-      alert("로그인 완료");
+      toast.success("로그인 되었습니다.");
     } else {
-      alert("필수 약관에 동의해주세요!");
+      toast.error("필수 약관에 동의해주세요!");
       return;
     }
   };
@@ -216,7 +218,9 @@ const Login = () => {
                   required
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
-                  onChange={(e) => setAccountInfo({...accountInfo, nickname: e.target.value})}
+                  onChange={(e) =>
+                    setAccountInfo({ ...accountInfo, nickname: e.target.value })
+                  }
                 />
               </div>
             </div>

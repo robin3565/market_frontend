@@ -2,10 +2,12 @@ import { BrowserRouter } from "react-router-dom";
 import Routers from "./Routers";
 import { useEffect, useState } from "react";
 import ScrollToTop from "../utils/ScrollToTop";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [mapInit, setMapInit] = useState(null);
   const [myLocation, setMyLocation] = useState({});
+  const [pos, setPos] = useState("top-center");
 
   useEffect(() => {
     const getMyPosition = () => {
@@ -57,6 +59,27 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <Toaster
+        position={pos}
+        reverseOrder={false}
+        gutter={8}
+        containerClassName="toast_web"
+        toastOptions={{
+          className: "",
+          duration: 2000,
+          style: {
+            backgroundColor: "rgba(82, 82, 91, 0.9)",
+            color: "white",
+            borderRadius: "20px",
+          },
+          success: {
+            style: {},
+          },
+          error: {
+            style: {},
+          },
+        }}
+      />
       <Routers
         mapInit={mapInit}
         saveMapInit={saveMapInit}

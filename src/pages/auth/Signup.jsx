@@ -144,12 +144,26 @@ const Signup = () => {
                   name="email"
                   type="email"
                   autoComplete="current-email"
-                  placeholder="이메일 (선택)"
+                  placeholder="이메일"
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
-                  {...register("email")}
+                  {...register("email", {
+                    required: "이메일은 필수 입력입니다.",
+                    pattern: {
+                      value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+                      message:
+                      "유효하지 않은 이메일입니다.",
+                    },
+                    minLength: {
+                      value: 1,
+                      message: "이메일을 입력해주세요.",
+                    },
+                  })}
                 />
               </div>
+              {errors.email && (
+                <small role="alert">{errors.email.message}</small>
+              )}
             </div>
 
             {/* 동의 여부 */}

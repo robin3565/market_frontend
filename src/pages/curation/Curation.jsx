@@ -39,7 +39,7 @@ const Curation = () => {
                       <div className="text-center text-white px-6 md:px-12">
                         <div className="title_a">
                           <p className="text-3xl md:text-4xl font-bold tracking-tight mb-2.5">
-                            5월의 시장
+                            6월의 시장
                           </p>
                           <p className="text-5xl md:text-6xl font-bold tracking-tight">
                             광주
@@ -69,10 +69,10 @@ const Curation = () => {
                     <div className="text-center text-white px-6 md:px-12">
                       <div className="title_b">
                         <p className="text-3xl md:text-4xl font-bold tracking-tight mb-2.5">
-                          6월의 시장
+                          7월의 시장
                         </p>
                         <p className="text-5xl md:text-6xl font-bold tracking-tight">
-                          부산
+                          coming soon
                         </p>
                       </div>
                     </div>

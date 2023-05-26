@@ -1,13 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../organisms/Navbar";
-import GeoCode from "../organisms/GeoCode";
-import NaverMap from "../organisms/NaverMap";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { geo } from "../json/geo";
 import {
   generateClickedMarkerHtml,
   generateMarkerHtml,
-  generateMyPositionMarkerHtml,
 } from "../utils/requestHtml";
 import { geoCode } from "../json/geoCode";
 import { HOME_PATH } from "../config/config_home";
@@ -17,7 +14,7 @@ import SwiperCore, { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 SwiperCore.use([Navigation]);
 
-const MapLayout = ({ mapInit, saveMapInit, myLocation }) => {
+const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
   const mapElement = useRef(null);
   const navigate = useNavigate();
   let selectedMarker = null; // 선택한 마커 상태를 저장하는 변수
@@ -243,7 +240,7 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation }) => {
 
   return (
     <div className="h-screen overflow-hidden">
-      <Navbar />
+      <Navbar login={login} />
       <div className="border-prigray-300 border-b h-6/100 web-only">
         <div className="md:mx-28 md:p-3.5 flex flex-col md:flex-row items-center justify-center flex-wrap">
           {chunkArray(geoCode, 5).map((group, groupIdx) => (

@@ -2,10 +2,10 @@ import React from "react";
 import Navbar from "../organisms/Navbar";
 import { Outlet } from "react-router-dom";
 
-const CurationLayout = () => {
+const CurationLayout = ({ login }) => {
   return (
     <div>
-      <Navbar />
+      <Navbar login={login} />
       <div className="h-full">
         <Outlet />
       </div>

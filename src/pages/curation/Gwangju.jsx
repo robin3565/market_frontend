@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SwiperCore, { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -6,32 +6,40 @@ import "swiper/swiper-bundle.css";
 SwiperCore.use([Navigation]);
 
 const Gwangju = () => {
-  const introRef = useRef(null);
-  const storesRef = useRef(null);
+  const [slidesPerView, setSlidesPerView] = useState(2);
 
-  // 특정 ID가 있는 위치로 스크롤 이동 함수
-  const scrollToSection = (ref) => {
-    if (ref && ref.current) {
-      ref.current.scrollIntoView({
-        behavior: "smooth",
-      });
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setSlidesPerView(1);
+      } else {
+        setSlidesPerView(2);
+      }
+    };
+
+    handleResize(); // Call it initially
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div>
       {/* 시장 소개 */}
-      <div ref={introRef} className="pt-28 mx-4 sm:mx-24 ">
-        <div className="md:mx-48 m-0 ">
+      <div className="pt-28 mx-4 sm:mx-36 ">
+        <div className="md:mx-48 m-0">
           <div className="md:flex-col flex-row mb-6">
             <p className="rounded-full bg-prigray-200 font-semibold inline-block p-2 px-3 mb-3">
-              월간 시장275
+              월간 시장 - 6월호
             </p>
             <p className="text-4xl font-bold mb-4 title_a">
               호남의 중심, 다양한 먹거리의 고장
             </p>
             <p className="text-4xl font-bold mb-4 title_a">
-              5월의 시장 &lt;광주&gt;
+              &lt;광주&gt; 시장 탐방
             </p>
           </div>
           <div className="w-full leading-7 tracking-wide">
@@ -67,19 +75,19 @@ const Gwangju = () => {
         <div className="my-12">
           <div className="md:mx-48 m-0 flex flex-col md:flex-row ">
             <div className="w-full md:w-1/3 mb-3">
-              <p className="text-4xl font-bold mb-2 title_a">광주의 시장들</p>
+              <p className="text-3xl font-bold mb-2 title_a">광주의 시장들</p>
             </div>
             {/* market info */}
             <div className="flex w-full md:w-2/3">
               <Swiper
-                slidesPerView={2}
+                slidesPerView={slidesPerView}
                 navigation
                 pagination={{ clickable: true }}
               >
                 <SwiperSlide>
                   <Link to="/curation/yangdong">
                     <div
-                      className="border border-gray-200 w-full md:w-80 h-80 md:mx-5 my-5 md:my-0 rounded-lg relative bg-no-repeat bg-cover"
+                      className="border border-gray-200 w-full md:w-80 h-80 rounded-lg relative bg-no-repeat bg-cover"
                       style={{
                         backgroundImage: `url("/img/market/양동시장.jpg")`,
                       }}
@@ -99,7 +107,7 @@ const Gwangju = () => {
                 </SwiperSlide>
                 <SwiperSlide>
                   <div
-                    className="border border-gray-200 w-full md:w-80 h-80 md:mx-5 my-5 md:my-0 rounded-lg relative bg-no-repeat bg-cover"
+                    className="border border-gray-200 w-full md:w-80 h-80 rounded-lg relative bg-no-repeat bg-cover"
                     style={{
                       backgroundImage: `url("/img/market/말바우시장.jfif")`,
                     }}
@@ -118,7 +126,7 @@ const Gwangju = () => {
                 </SwiperSlide>
                 <SwiperSlide>
                   <div
-                    className="border border-gray-200 w-full md:w-80 h-80 md:mx-5 my-5 md:my-0 rounded-lg relative bg-no-repeat bg-cover"
+                    className="border border-gray-200 w-full md:w-80 h-80 rounded-lg relative bg-no-repeat bg-cover"
                     style={{}}
                   >
                     <div

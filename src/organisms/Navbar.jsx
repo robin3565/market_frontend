@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { HOME_PATH } from "../config/config_home";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../atoms/Logo";
 
-const Navbar = () => {
+const Navbar = ({ login }) => {
   const location = useLocation();
   const [view, setView] = useState(false);
   const path = location.pathname.split("/")[1];
+  const navigation = useNavigate();
   const handleViewNavBar = () => {
     setView((view) => !view);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    window.location.reload();
   };
 
   return (
@@ -23,15 +28,28 @@ const Navbar = () => {
             <Logo />
           </div>
           <div className="flex md:order-2">
-            <a
-              href="/login"
-              className="text-white bg-blue-700 
+            {!login ? (
+              <a
+                href="/login"
+                className="text-white bg-blue-700 
             hover:bg-blue-800 font-medium rounded-lg 
             text-sm px-4 py-2 text-center my-2.5 md:my-0 md:mr-0 
             dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text flex items-center justify-center"
-            >
-              로그인
-            </a>
+              >
+                로그인
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="text-white bg-blue-700 
+            hover:bg-blue-800 font-medium rounded-lg 
+            text-sm px-4 py-2 text-center my-2.5 md:my-0 md:mr-0 
+            dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text flex items-center justify-center"
+              >
+                로그아웃
+              </button>
+            )}
 
             {/* 모바일 */}
             <button
