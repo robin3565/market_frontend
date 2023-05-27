@@ -44,8 +44,6 @@ const Routers = ({ mapInit, saveMapInit, myLocation }) => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot" element={<Forgot />} />
-        <Route path="/mypage" element={<Mypage />} />
-        <Route path="/mypage/profile" element={<Profile />} />
       </Route>
       <Route element={<MainLayout login={login} />}>
         <Route path="/" element={<Home />} />
@@ -54,6 +52,8 @@ const Routers = ({ mapInit, saveMapInit, myLocation }) => {
       <Route element={<CurationLayout login={login} />}>
         <Route path="/curation/yangdong" element={<Yangdong />} />
         <Route path="/curation/gwangju" element={<Gwangju />} />
+        <Route path="/mypage" element={<Mypage />} />
+        <Route path="/mypage/profile" element={<Profile />} />
       </Route>
       <Route
         element={

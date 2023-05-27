@@ -79,6 +79,34 @@
     right: 10px;
 }
 
+.swiper-navigation {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-btn-prev,
+.main-btn-next  {
+    display: block;
+    position: absolute;
+    top: 35%;
+    z-index: 1;
+    margin-bottom: 20px;
+    background-color: transparent;
+}
+
+.main-btn-prev::after,
+.main-btn-next::after  {
+    display: none;
+}
+
+.main-btn-prev {
+    left: calc(50% - 676px);
+}
+
+.main-btn-next {
+    right: calc(50% - 676px);
+}
+
 @media (min-width: 768px) {
     .mobile-only {
         display: none;
@@ -87,6 +115,14 @@
 
 @media (max-width: 767px) and (max-width: 1024px) {
     .web-only {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .swiper-button-prev,
+    .swiper-button-next {
         display: none;
     }
 }

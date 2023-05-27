@@ -97,8 +97,8 @@ const Login = () => {
     <>
       {/* Component 01 */}
       {viewStep.first && (
-        <>
-          <div className="md:w-1/3 lg:w-1/4 w-full flex-col justify-center items-center">
+        <div className="md:w-1/3 lg:w-1/4 w-full flex-col h-screen md:py-24 py-8">
+          <div className="w-full flex-col">
             <div className="flex items-center justify-center mb-5">
               <h3 className="font-bold text-3xl">로그인</h3>
             </div>
@@ -186,115 +186,123 @@ const Login = () => {
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
       {/* Component 02 */}
       {viewStep?.second && (
-        <>
-          <div className="md:w-1/3 lg:w-1/4 w-full flex-col justify-center items-center">
+        <div className="md:w-1/3 lg:w-1/4 w-full flex-col h-screen md:py-24 py-8">
+          <div className="w-full flex-col">
             <div className="flex items-center justify-center mb-5">
-              <Logo size={"big"} />
-            </div>
-            <div>
-              <div className="mt-2">
-                <input
-                  id="id"
-                  name="id"
-                  type="text"
-                  disabled={true}
-                  value={accountInfo.id}
-                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
-                />
-              </div>
-              <div className="mt-2">
-                <input
-                  id="nickname"
-                  name="nickname"
-                  type="text"
-                  value={accountInfo.nickname}
-                  autoComplete="nickname"
-                  placeholder="닉네임"
-                  required
-                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
-                  onChange={(e) =>
-                    setAccountInfo({ ...accountInfo, nickname: e.target.value })
-                  }
-                />
-              </div>
+              <h3 className="font-bold text-3xl">회원가입</h3>
             </div>
 
-            {/* 동의하기 */}
-            <div className="mt-5">
-              <div className="py-0.5">
-                <input
-                  type="checkbox"
-                  id="check_all"
-                  name="check_all"
-                  checked={check_all}
-                  className="accent-blue-600"
-                  onChange={handleCheckAllChange}
-                />
-                <label for="check_all" className="ml-1.5">
-                  모두 동의합니다
-                </label>
-              </div>
-              <div className="py-0.5">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  name="terms"
-                  checked={terms}
-                  className="accent-blue-600"
-                  onChange={handleCheckboxChange}
-                />
-                <label for="terms" className="ml-1.5">
-                  이용약관 동의 (필수)
-                </label>
-              </div>
-              <div className="py-0.5">
-                <input
-                  type="checkbox"
-                  id="privacy"
-                  name="privacy"
-                  checked={privacy}
-                  className="accent-blue-600"
-                  onChange={handleCheckboxChange}
-                />
-                <label for="privacy" className="ml-1.5">
-                  개인정보 수집/이용 동의 (필수)
-                </label>
-              </div>
-              <div className="py-0.5">
-                <input
-                  type="checkbox"
-                  id="subscribe"
-                  name="subscribe"
-                  checked={subscribe}
-                  className="accent-blue-600"
-                  onChange={handleCheckboxChange}
-                />
-                <label for="subscribe" className="ml-1.5">
-                  뉴스레터 및 마케팅 정보 수신 동의 (선택)
-                </label>
-              </div>
-            </div>
-            <div className="mt-5">
-              <button
-                type="button"
-                disabled={!isValidationTrue}
-                className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-3
+            <div className="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+              <div  className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <div>
+                  <div className="mt-2">
+                    <input
+                      id="id"
+                      name="id"
+                      type="text"
+                      disabled={true}
+                      value={accountInfo.id}
+                      className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
+                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      id="nickname"
+                      name="nickname"
+                      type="text"
+                      value={accountInfo.nickname}
+                      autoComplete="nickname"
+                      placeholder="닉네임"
+                      required
+                      className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
+                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                      onChange={(e) =>
+                        setAccountInfo({
+                          ...accountInfo,
+                          nickname: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                {/* 동의하기 */}
+                <div className="mt-5">
+                  <div className="py-0.5">
+                    <input
+                      type="checkbox"
+                      id="check_all"
+                      name="check_all"
+                      checked={check_all}
+                      className="accent-blue-600"
+                      onChange={handleCheckAllChange}
+                    />
+                    <label for="check_all" className="ml-1.5">
+                      모두 동의합니다
+                    </label>
+                  </div>
+                  <div className="py-0.5">
+                    <input
+                      type="checkbox"
+                      id="terms"
+                      name="terms"
+                      checked={terms}
+                      className="accent-blue-600"
+                      onChange={handleCheckboxChange}
+                    />
+                    <label for="terms" className="ml-1.5">
+                      이용약관 동의 (필수)
+                    </label>
+                  </div>
+                  <div className="py-0.5">
+                    <input
+                      type="checkbox"
+                      id="privacy"
+                      name="privacy"
+                      checked={privacy}
+                      className="accent-blue-600"
+                      onChange={handleCheckboxChange}
+                    />
+                    <label for="privacy" className="ml-1.5">
+                      개인정보 수집/이용 동의 (필수)
+                    </label>
+                  </div>
+                  <div className="py-0.5">
+                    <input
+                      type="checkbox"
+                      id="subscribe"
+                      name="subscribe"
+                      checked={subscribe}
+                      className="accent-blue-600"
+                      onChange={handleCheckboxChange}
+                    />
+                    <label for="subscribe" className="ml-1.5">
+                      뉴스레터 및 마케팅 정보 수신 동의 (선택)
+                    </label>
+                  </div>
+                </div>
+                <div className="mt-5">
+                  <button
+                    type="button"
+                    disabled={!isValidationTrue}
+                    className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-3
                    font-semibold leading-6 text-white shadow-sm hover:bg-blue-500
                     focus-visible:outline focus-visible:outline-2
                      focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-prigray-400"
-                onClick={handleLastLogin}
-              >
-                가입하기
-              </button>
+                    onClick={handleLastLogin}
+                  >
+                    가입하기
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </>
   );

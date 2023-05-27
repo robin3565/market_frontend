@@ -11,10 +11,11 @@ const Geo = ({ mapInit }) => {
   const { naver } = window;
 
   const moveToMarket = (item, map) => {
-    const geo = item["지리정보"];
+    const latitude = item.market_latitude;
+    const longitude = item.market_longitude;
     const mapLatLng = new naver.maps.LatLng(
-      Number(geo.latitude),
-      Number(geo.longitude)
+      Number(latitude),
+      Number(longitude)
     );
 
     map.panTo(mapLatLng);
@@ -34,7 +35,7 @@ const Geo = ({ mapInit }) => {
                   onClick={async () => {
                     moveToMarket(item, mapInit);
                     const uid = item.uid;
-                    const name = item["시장정보"];
+                    const name = item.market_name;
                     const markerData = await naverSearchData(name);
                     const commentData = await getCommentData(name);
                     navigate(`/map/market/${uid}`, {
@@ -52,10 +53,10 @@ const Geo = ({ mapInit }) => {
                     </div>
                     <div className="w-2/3">
                       <p className="text-prigray-400 md:text-sm text-xs">
-                        {item["시도군"]}
+                        {item.geo_info}
                       </p>
                       <p className="font-semibold md:text-lg">
-                        {item["시장정보"]}
+                        {item.market_name}
                       </p>
                       <div className="text-sm">
                         <div className="flex items-center">
@@ -65,7 +66,7 @@ const Geo = ({ mapInit }) => {
                               src={`${HOME_PATH}/img/location_48.png`}
                             />
                           </div>
-                          <span>{item["도로명 주소"]}</span>
+                          <span>{item.market_location_a}</span>
                         </div>
                         <div className="flex items-center">
                           <div className="w-6 h-6 bg-prigray-100 flex justify-center items-center mr-1 rounded-full">
@@ -75,10 +76,10 @@ const Geo = ({ mapInit }) => {
                             />
                           </div>
                           <span>
-                            {item["시장유형"]} - {item["시장개설주기"]}
+                            {item.market_type} - {item.market_period}
                           </span>
                         </div>
-                        {/* <p>{item["취급품목"]}</p> */}
+                        {/* <p>{item.market_item}</p> */}
                       </div>
                     </div>
                   </div>

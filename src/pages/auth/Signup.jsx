@@ -24,7 +24,7 @@ const Signup = () => {
   const isValidationTrue = check_all || (terms && privacy);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div className="w-full h-full flex flex-col items-center mx-auto md:my-24 my-8">
       <div className="flex items-center justify-center mb-5">
         {/* <Logo size={"big"} /> */}
         <h3 className="font-bold text-3xl">회원가입</h3>
@@ -59,7 +59,8 @@ const Signup = () => {
                   aria-invalid={
                     !isDirty ? undefined : errors.id ? "true" : "false"
                   }
-                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1 ring-inset 
+                  className="block w-full border-0 py-3 pl-4 
+                  text-gray-900 shadow-sm ring-1 ring-inset 
                     ring-gray-300 placeholder:text-gray-400"
                   {...register("id", {
                     required: "아이디는 필수 입력입니다.",

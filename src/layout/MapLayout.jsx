@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../organisms/Navbar";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { geo } from "../json/geo";
+// import { geo } from "../json/geo";
 import {
   generateClickedMarkerHtml,
   generateMarkerHtml,
 } from "../utils/requestHtml";
 import { geoCode } from "../json/geoCode";
 import { HOME_PATH } from "../config/config_home";
-import { getCommentData, naverSearchData } from "../utils/requestList";
+import { getAllMarketData, getCommentData, getMarketData, naverSearchData } from "../utils/requestList";
 import { MarkerClustering } from "../MarkerClustering";
 import SwiperCore, { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -18,15 +18,18 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
   const mapElement = useRef(null);
   const navigate = useNavigate();
   let selectedMarker = null; // 선택한 마커 상태를 저장하는 변수
+  const [clickedData, setClickedData] = useState([]);
+  const [geo, setGeo] = useState([]);
 
   const { naver } = window;
 
   // 마커 이동
   const moveToMarket = (item, map) => {
-    const geo = item?.["지리정보"];
+    const latitude = item.market_latitude;
+    const longitude = item.market_longitude;
     const mapLatLng = new naver.maps.LatLng(
-      Number(geo.latitude),
-      Number(geo.longitude)
+      Number(latitude),
+      Number(longitude)
     );
 
     map.panTo(mapLatLng);
@@ -35,7 +38,7 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
   const markerClickEvent = (marker, infowindow, item, map) => {
     naver.maps.Event.addListener(marker, "click", async () => {
       const uid = item.uid;
-      const name = item["시장정보"];
+      const name = item.market_name;
       // map.setZoom(16);
 
       // (1) 이동 이벤트
@@ -140,13 +143,17 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
       
       // Display markers
       let markers = [];
-      geo?.forEach((item) => {
-        const geo = item["지리정보"];
-        const name = item["시장정보"];
-        const address = item["도로명 주소"];
+      const getGeo = await getAllMarketData();
+      setGeo(getGeo);
+      // 모든 데이터 가져오기
+      getGeo?.forEach((item) => {
+        const latitude = item.market_latitude;
+        const longitude = item.market_longitude;
+        const address = item.market_location_a;
+        const name = item.market_name;
 
         const marker = new naver.maps.Marker({
-          position: new naver.maps.LatLng(geo.latitude, geo.longitude),
+          position: new naver.maps.LatLng(latitude, longitude),
           map: map,
           icon: {
             content: generateMarkerHtml(name),
@@ -245,21 +252,24 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
         <div className="md:mx-28 md:p-3.5 flex flex-col md:flex-row items-center justify-center flex-wrap">
           {chunkArray(geoCode, 5).map((group, groupIdx) => (
             <div key={groupIdx} className="flex">
-              {group.map((item, itemIdx) => {
-                const data = geo.filter((i) => i["시도군"] === item.name);
+              {group.map( (item, itemIdx) => {
                 return (
-                  <Link
+                  <p
                     key={itemIdx}
-                    to={`/map/${item.code}`}
-                    state={{ data: data }}
-                    onClick={() => {
+                    className="cursor-pointer"
+                    onClick={async() => {
                       moveToMarket(item, mapInit);
+                      const data = await getMarketData(item.name);
+                      setClickedData(data)
+                      navigate(`/map/${item.code}`, {
+                        state: { data: data },
+                      });
                     }}
                   >
                     <span className="md:m-2 m-1 border border-prigray-600 rounded-full px-2.5 py-1 text-prigray-600 shadow-md">
                       {item.name}
                     </span>
-                  </Link>
+                  </p>
                 );
               })}
             </div>
@@ -278,15 +288,17 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
           >
             {chunkArray(geoCode, 4).map((group, groupIdx) => (
               <SwiperSlide key={groupIdx} className="flex items-center justify-center h-full">
-                {group.map((item, itemIdx) => {
+                {group.map( (item, itemIdx) => {
                   const data = geo.filter((i) => i["시도군"] === item.name);
                   return (
                     <Link
                       key={itemIdx}
                       to={`/map/${item.code}`}
                       state={{ data: data }}
-                      onClick={() => {
+                      onClick={async() => {
                         moveToMarket(item, mapInit);
+                        const data_ = await getMarketData(item.name);
+                        console.log(data_)
                       }}
                     >
                       <span className="mx-1 border border-prigray-600 rounded-full px-2.5 py-1 text-prigray-600 shadow-md">
