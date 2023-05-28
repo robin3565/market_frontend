@@ -19,12 +19,12 @@ const Footer = () => {
             </a>
           </li>
           <li>
-            <a href="#" className="mr-4 hover:underline md:mr-6">
+            <a href="/curation" className="mr-4 hover:underline md:mr-6">
               Curation
             </a>
           </li>
           <li>
-            <a href="#" className="mr-4 hover:underline md:mr-6 ">
+            <a href="/map" className="mr-4 hover:underline md:mr-6 ">
               Market Maps
             </a>
           </li>

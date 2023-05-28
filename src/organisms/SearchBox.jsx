@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import useInput from "../hooks/useInput";
-import { naverSearchData } from "../utils/requestList";
-import { geo } from "../json/geo";
+import { getSearchData, naverSearchData } from "../utils/requestList";
 import { throttle } from "lodash";
 import { useLocation, useNavigate } from "react-router-dom";
+import SearchIcon from "../atoms/SearchIcon";
+import { HOME_PATH } from "../config/config_home";
 
 const SearchBox = ({ mapInit }) => {
   const { naver } = window;
@@ -30,34 +31,46 @@ const SearchBox = ({ mapInit }) => {
   }, [location]);
 
   const moveToMarket = (item, map) => {
-    const geo = item["지리정보"];
+    const latitude = item.latitude;
+    const longitude = item.longitude;
     const mapLatLng = new naver.maps.LatLng(
-      Number(geo.latitude),
-      Number(geo.longitude)
+      Number(latitude),
+      Number(longitude)
     );
 
     map.panTo(mapLatLng);
   };
 
-  useEffect(() => {
-    const handleSearch = throttle((name) => {
-      const searched = geo.filter((item) =>
-        item["시장정보"].toLowerCase().includes(name.toLowerCase())
-      );
+  const handleSearch = throttle(async (name) => {
+    const searched = await getSearchData(name);
+    if(searched.length > 0) {
       setSearchResults(searched);
-    }, 300);
+    } else {
+      setSearchResults([]);
+    }
+  }, 300);
 
-    handleSearch(value);
+  useEffect(() => {
+    if(!value || value.length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    if (value) {
+      if (value.length > 1) {
+        handleSearch(value);
+      }
+    }
   }, [value]);
 
   const handleEnterKey = async () => {
-    if (searchResults.length > 0) {
+    if (searchResults?.length > 0) {
       const item = searchResults[0];
       setSelectedResult(item);
 
       moveToMarket(item, mapInit);
       const uid = item.uid;
-      const name = item["시장정보"];
+      const name = item.market_name;
       const markerData = await naverSearchData(name);
       navigate(`/map/market/${uid}`, {
         state: { data: item, markerData: markerData },
@@ -75,25 +88,20 @@ const SearchBox = ({ mapInit }) => {
         Search
       </label>
       <div className="relative">
-        <div
-          className="absolute inset-y-0 left-0 flex items-center pl-3 
-        pointer-events-none"
-        >
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 text-gray-500 dark:text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 ">
+        <SearchIcon />
+          <button
+            className="w-10 h-10 md:hidden block"
+            type="button"
+            onClick={() => {
+              navigate(-1);
+            }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            ></path>
-          </svg>
+            <img
+              className="w-5 h-5"
+              src={`${HOME_PATH}/img/back_gray_60.png`}
+            />
+          </button>
         </div>
         <input
           type="search"
@@ -109,10 +117,15 @@ const SearchBox = ({ mapInit }) => {
           style={{ flex: "1" }}
         />
       </div>
-      {value && (
+      {(value && searchResults.length === 0) && (
+        <div className="px-4 pt-1 border bg-white z-50 w-full">
+          <p className="my-2">검색결과가 없습니다.</p>
+        </div>
+      )}
+      {searchResults.length > 0 && (
         <div className="px-4 pt-1 border bg-white z-50 w-full">
           <ul>
-            {searchResults.slice(0, 6).map((item) => {
+            {searchResults?.slice(0, 6).map((item) => {
               return (
                 <div
                   key={item.id}
@@ -122,15 +135,15 @@ const SearchBox = ({ mapInit }) => {
                   onClick={async () => {
                     moveToMarket(item, mapInit);
                     setSelectedResult(item);
-                    const uid = item.uid;
-                    const name = item["시장정보"];
+                    const uid = item.market_uid;
+                    const name = item.market_name;
                     const markerData = await naverSearchData(name);
                     navigate(`/map/market/${uid}`, {
                       state: { data: item, markerData: markerData },
                     });
                   }}
                 >
-                  <p className="my-2">{item["시장정보"]}</p>
+                  <p className="my-2">{item.market_name}</p>
                 </div>
               );
             })}

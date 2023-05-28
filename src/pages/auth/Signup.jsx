@@ -2,6 +2,8 @@ import React from "react";
 import Logo from "../../atoms/Logo";
 import useCheckbox from "../../hooks/useCheckbox";
 import { useForm } from "react-hook-form";
+import { postSignup } from "../../utils/requestList";
+import { toast } from "react-hot-toast";
 
 const Signup = () => {
   const {
@@ -22,6 +24,38 @@ const Signup = () => {
   });
 
   const isValidationTrue = check_all || (terms && privacy);
+  const onSubmit = async (data, e) => {
+    // 비밀번호 확인
+    if (data.password !== data.password_confirm) {
+      setError(
+        "password_confirm",
+        { message: "비밀번호가 일치하지 않습니다." },
+        { shouldFocus: true }
+      );
+    }
+
+    const id_ = data.id.trim();
+    const password_ = data.password.trim();
+    const email_ = data.email.trim();
+    const nickname_ = data.nickname.trim();
+    const marketing_flag = subscribe == true ? "Y" : "N";
+
+    const param = {
+      mem_id: id_,
+      mem_pw: password_,
+      mem_email: email_,
+      mem_name: nickname_,
+      marketing_flag: marketing_flag,
+    };
+
+    const res = await postSignup(param);
+    if (res?.result === "success") {
+      toast.success("회원가입 완료!");
+    } else {
+      toast.error("회원가입에 실패하였습니다. 다시 시도해주세요.");
+    }
+  };
+  const onError = (errors, e) => console.log(errors, e);
 
   return (
     <div className="w-full h-full flex flex-col items-center mx-auto md:my-24 my-8">
@@ -34,19 +68,7 @@ const Signup = () => {
           <form
             className="space-y-4 md:space-y-6"
             action="#"
-            onSubmit={handleSubmit((data) => {
-              try {
-                if (data.password !== data.password_confirm) {
-                  setError(
-                    "password_confirm",
-                    { message: "비밀번호가 일치하지 않습니다." },
-                    { shouldFocus: true }
-                  );
-                }
-              } catch (e) {
-                console.log(e);
-              }
-            })}
+            onSubmit={handleSubmit(onSubmit, onError)}
           >
             <div>
               <div className="mt-1">
@@ -68,9 +90,17 @@ const Signup = () => {
                       value: /^[a-zA-Z0-9]+$/,
                       message: "아이디는 영문자와 숫자로만 이루어져야 합니다.",
                     },
+                    pattern: {
+                      value: /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/,
+                      message: "아이디는 반드시 영문자를 포함해야 합니다.",
+                    },
+                    minLength: {
+                      value: 5,
+                      message: "아이디는 5자리 이상 입력해주세요.",
+                    },
                   })}
                 />
-                {errors.id && <small role="alert">{errors.id.message}</small>}
+                {errors.id && <small className="text-primary-500" role="alert">{errors.id.message}</small>}
               </div>
             </div>
 
@@ -90,9 +120,9 @@ const Signup = () => {
                   {...register("password", {
                     required: "비밀번호는 필수 입력입니다.",
                     pattern: {
-                      value: /^[a-zA-Z0-9]+$/,
+                      value: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]+$/,
                       message:
-                        "비밀번호는 영문자와 숫자로만 이루어져야 합니다.",
+                        "비밀번호는 영문자와 숫자를 반드시 포함해야합니다.",
                     },
                     minLength: {
                       value: 8,
@@ -101,7 +131,7 @@ const Signup = () => {
                   })}
                 />
                 {errors.password && (
-                  <small role="alert">{errors.password.message}</small>
+                  <small className="text-primary-500" role="alert">{errors.password.message}</small>
                 )}
               </div>
             </div>
@@ -120,7 +150,7 @@ const Signup = () => {
                 />
               </div>
               {errors.password_confirm && (
-                <small role="alert">{errors.password_confirm.message}</small>
+                <small className="text-primary-500" role="alert">{errors.password_confirm.message}</small>
               )}
             </div>
             <div>
@@ -130,7 +160,7 @@ const Signup = () => {
                   name="nickname"
                   type="nickname"
                   autoComplete="current-nickname"
-                  placeholder="닉네임"
+                  placeholder="닉네임 (필수)"
                   required
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
@@ -145,15 +175,14 @@ const Signup = () => {
                   name="email"
                   type="email"
                   autoComplete="current-email"
-                  placeholder="이메일"
+                  placeholder="이메일 (필수)"
                   className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
                      ring-inset ring-gray-300 placeholder:text-gray-400"
                   {...register("email", {
                     required: "이메일은 필수 입력입니다.",
                     pattern: {
                       value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                      message:
-                      "유효하지 않은 이메일입니다.",
+                      message: "유효하지 않은 이메일입니다.",
                     },
                     minLength: {
                       value: 1,
@@ -163,7 +192,7 @@ const Signup = () => {
                 />
               </div>
               {errors.email && (
-                <small role="alert">{errors.email.message}</small>
+                <small className="text-primary-500" role="alert">{errors.email.message}</small>
               )}
             </div>
 

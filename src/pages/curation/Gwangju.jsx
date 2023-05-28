@@ -105,6 +105,7 @@ const Gwangju = () => {
                   </Link>
                 </SwiperSlide>
                 <SwiperSlide>
+                  <Link to="/curation/malbau">
                   <div
                     className="border border-gray-200 w-full md:w-80 h-80 rounded-lg relative bg-no-repeat bg-cover"
                     style={{
@@ -121,7 +122,7 @@ const Gwangju = () => {
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </div></Link>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div

@@ -27,13 +27,12 @@ const Curation = () => {
                   className="relative overflow-hidden bg-no-repeat bg-cover"
                   style={{
                     backgroundPosition: "50%",
-                    backgroundImage: "url('/img/market/양동시장.jpg')",
+                    backgroundImage: "url('/img/gwangju.jpg')",
                     height: "300px",
                   }}
                 >
                   <div
-                    className="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed"
-                    style={{ backgroundColor: "rgba(0, 0, 0, 0.75)" }}
+                    className="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed bg-black/25 hover:bg-black/50 transition"
                   >
                     <div className="flex justify-center items-center h-full">
                       <div className="text-center text-white px-6 md:px-12">
@@ -57,7 +56,7 @@ const Curation = () => {
                 className="relative overflow-hidden bg-no-repeat bg-cover"
                 style={{
                   backgroundPosition: "50%",
-                  backgroundImage: "url('/img/market/말바우시장.jfif')",
+                  backgroundImage: "url('/img/busan.jpg')",
                   height: "300px",
                 }}
               >

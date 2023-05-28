@@ -14,6 +14,7 @@ import {
   Login,
   Signup,
   Gwangju,
+  Malbau,
 } from "../pages";
 import CurationLayout from "../layout/CurationLayout";
 import Mypage from "../pages/auth/Mypage";
@@ -24,9 +25,11 @@ const Routers = ({ mapInit, saveMapInit, myLocation }) => {
   const location = useLocation();
 
   const checkAuthentication = () => {
-    const accessToken = sessionStorage.getItem("access_token");
-    const refreshToken = sessionStorage.getItem("refresh_token");
-    if (accessToken && refreshToken) {
+    // const accessToken = sessionStorage.getItem("access_token");
+    // const refreshToken = sessionStorage.getItem("refresh_token");
+    const loginStatus = sessionStorage.getItem("login_status");
+
+    if (loginStatus === "Y") {
       return true;
     } else {
       return false;
@@ -51,6 +54,7 @@ const Routers = ({ mapInit, saveMapInit, myLocation }) => {
       </Route>
       <Route element={<CurationLayout login={login} />}>
         <Route path="/curation/yangdong" element={<Yangdong />} />
+        <Route path="/curation/malbau" element={<Malbau />} />
         <Route path="/curation/gwangju" element={<Gwangju />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/mypage/profile" element={<Profile />} />

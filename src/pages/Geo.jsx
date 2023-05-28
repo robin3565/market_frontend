@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../config/config_home";
 import { naverSearchData, getCommentData } from "../utils/requestList";
@@ -6,13 +6,13 @@ import SearchBox from "../organisms/SearchBox";
 
 const Geo = ({ mapInit }) => {
   const location = useLocation();
-  const data = location.state?.data;
+  const data = location.state?.data?.searchList;
   const navigate = useNavigate();
   const { naver } = window;
 
   const moveToMarket = (item, map) => {
-    const latitude = item.market_latitude;
-    const longitude = item.market_longitude;
+    const latitude = item.latitude;
+    const longitude = item.longitude;
     const mapLatLng = new naver.maps.LatLng(
       Number(latitude),
       Number(longitude)
@@ -20,6 +20,14 @@ const Geo = ({ mapInit }) => {
 
     map.panTo(mapLatLng);
   };
+  
+  useEffect(() => {
+    // 잘못된 경로
+    if (!location.state?.data) {
+      navigate("/map");
+    }
+  }, []);
+
 
   return (
     <>
@@ -28,13 +36,13 @@ const Geo = ({ mapInit }) => {
           <div>
             <SearchBox mapInit={mapInit} />
             <div className="p-4 pt-0">
-              {data?.map((item) => (
+              {data?.map((item, idx) => (
                 <div
-                  key={item.uid}
+                  key={idx}
                   className="border border-prigray-200 rounded-lg p-3 my-4 mt-0 cursor-pointer"
                   onClick={async () => {
                     moveToMarket(item, mapInit);
-                    const uid = item.uid;
+                    const uid = item.market_uid;
                     const name = item.market_name;
                     const markerData = await naverSearchData(name);
                     const commentData = await getCommentData(name);

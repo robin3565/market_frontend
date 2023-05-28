@@ -3,11 +3,21 @@ import Routers from "./Routers";
 import { useEffect, useState } from "react";
 import ScrollToTop from "../utils/ScrollToTop";
 import { Toaster } from "react-hot-toast";
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 function App() {
   const [mapInit, setMapInit] = useState(null);
   const [myLocation, setMyLocation] = useState({});
   const [pos, setPos] = useState("top-center");
+
+  // useEffect(() => {
+  //   NProgress.start(); // 컴포넌트 마운트 시 NProgress 시작
+
+  //   return () => {
+  //     NProgress.done(); // 컴포넌트 언마운트 시 NProgress 완료
+  //   };
+  // }, []);
 
   useEffect(() => {
     const getMyPosition = () => {
