@@ -11,16 +11,6 @@
       "src": "market_icon.png",
       "type": "image/png",
       "sizes": "64x64"
-    },
-    {
-      "src": "market_favicon.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "market_icon.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "start_url": ".",

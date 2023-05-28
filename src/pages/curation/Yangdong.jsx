@@ -87,46 +87,40 @@ const Yangdong = () => {
             </p>
           </div>
         </div>
-        <div className="md:w-3/4 w-18/20 mx-auto flex flex-col md:flex-row justify-between mt-16 h-full">
+        <div className="md:w-3/4 w-18/20 mx-auto flex flex-col md:flex-row justify-between mt-16">
           <div
-            style={{ height: "240px" }}
-            className="relative md:mx-4 rounded-lg"
+            className="relative md:mx-4"
           >
             <img
-              className="rounded-lg"
               src={`${HOME_PATH}/img/market/old_양동시장_1.jpg`}
-              style={{ objectFit: "contain", height: "100%" }}
+              style={{ objectFit: "contain" }}
               alt="Image 1"
             />
-            <div className="rounded-lg absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
+            <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
               <p className="text-white text-xl font-bold">Data 1</p>
             </div>
           </div>
           <div
-            style={{ height: "240px" }}
-            className="relative md:mx-4 rounded-lg"
+            className="relative md:mx-4 "
           >
             <img
-              className="rounded-lg"
               src={`${HOME_PATH}/img/market/old_양동시장_2.jpg`}
-              style={{ objectFit: "contain", height: "100%" }}
+              style={{ objectFit: "contain" }}
               alt="Image 2"
             />
-            <div className="rounded-lg absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
+            <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
               <p className="text-white text-xl font-bold">Data 2</p>
             </div>
           </div>
           <div
-            style={{ height: "240px" }}
-            className="relative md:mx-4 rounded-lg"
+            className="relative md:mx-4"
           >
             <img
-              className="rounded-lg"
               src={`${HOME_PATH}/img/market/old_양동시장_3.jpg`}
-              style={{ objectFit: "contain", height: "100%" }}
+              style={{ objectFit: "contain" }}
               alt="Image 3"
             />
-            <div className="rounded-lg absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
+            <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
               <p className="text-white text-xl font-bold">Data 3</p>
             </div>
           </div>
@@ -140,9 +134,9 @@ const Yangdong = () => {
         <div className="md:py-20">
           <div className="mx-4 md:mx-48">
             {/*  01  */}
-            <div className="flex flex-col-reverse md:flex-row justify-between mb-10">
+            <div className="flex flex-col md:flex-row justify-between md:mb-10 md:p-0 pt-10">
               <div className="w-full md:w-1/3">
-                <p className="text-prigray-400">#양동시장 #통닭 #노포맛집</p>
+                <p className="text-prigray-600">#양동시장 #통닭 #노포맛집</p>
                 <p className="text-2xl font-semibold my-2">
                   추억을 간직한 맛, 양동 통닭집
                 </p>
@@ -184,9 +178,9 @@ const Yangdong = () => {
               </div>
             </div>
             {/*  02  */}
-            <div className="flex flex-col-reverse md:flex-row justify-between mb-10">
+            <div className="flex flex-col md:flex-row justify-between md:mb-10 md:p-0 pt-10">
               <div className="w-full md:w-1/3">
-                <p className="text-prigray-400">#양동시장 #빵집 #소금빵</p>
+                <p className="text-prigray-600">#양동시장 #빵집 #소금빵</p>
                 <p className="text-2xl font-semibold my-2">
                   소금빵 맛집, 양동시장 소금빵집
                 </p>
@@ -226,9 +220,9 @@ const Yangdong = () => {
               </div>
             </div>
             {/*  03  */}
-            <div className="flex flex-col-reverse md:flex-row justify-between mb-10">
+            <div className="flex flex-col md:flex-row justify-between md:mb-10 md:p-0 pt-10">
               <div className="w-full md:w-1/3">
-                <p className="text-prigray-400">#양동시장 #가성비 #분식</p>
+                <p className="text-prigray-600">#양동시장 #가성비 #분식</p>
                 <p className="text-2xl font-semibold my-2">
                   시장 인심이 가득한 노포 맛집
                 </p>
@@ -242,6 +236,47 @@ const Yangdong = () => {
               </div>
               <div className="flex flex-wrap justify-center items-center">
                 {gwangju_store?.slice(4, 6)?.map((store, idx) => {
+                  const name = store["점포명"];
+                  const location = store["소재지도로명주소"];
+                  return (
+                    <div
+                      className="border border-gray-200 w-full md:w-80 h-80 mx-2 md:mx-5 my-5 md:my-0 rounded-lg relative bg-no-repeat bg-cover"
+                      key={idx}
+                      style={{
+                        backgroundImage: `url(${store.img_url})`,
+                      }}
+                    >
+                      <div
+                        className="rounded-lg absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed"
+                        style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
+                      >
+                        <div className="p-4 text-white">
+                          <p className="font-semibold text-2xl mb-2">{name}</p>
+                          <p>{location}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            {/*  04  */}
+            <div className="flex flex-col md:flex-row justify-between md:mb-10 md:p-0 pt-10">
+              <div className="w-full md:w-1/3">
+                <p className="text-prigray-600">#양동시장 #다양한 #반찬</p>
+                <p className="text-2xl font-semibold my-2">
+                  시장 인심이 가득한 노포 맛집
+                </p>
+                <p className="leading-6 mt-5">
+                  오래된 노포 맛집은 전통적인 맛과 정서를 그대로 전해주는
+                  곳으로, 그 독특한 매력으로 많은 사람들에게 사랑 받고 있다.
+                  깊은 맛은 물론 오랜 세월 동안 전해져온 비법 레시피와 정성이
+                  담겨있어, 한 그릇 음식만으로도 몸과 마음이 따뜻해지는 기분을
+                  느낄 수 있다.
+                </p>
+              </div>
+              <div className="flex flex-wrap justify-center items-center">
+                {gwangju_store?.slice(6, 8)?.map((store, idx) => {
                   const name = store["점포명"];
                   const location = store["소재지도로명주소"];
                   return (

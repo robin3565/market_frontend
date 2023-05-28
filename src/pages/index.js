@@ -9,4 +9,5 @@ export { default as Signup } from "./auth/Signup";
 
 export { default as Curation } from "./curation/Curation";
 export { default as Yangdong } from "./curation/Yangdong";
+export { default as Malbau } from "./curation/Malbau";
 export { default as Gwangju } from "./curation/Gwangju";

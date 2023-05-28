@@ -4,6 +4,7 @@ import useInputs from "../../hooks/useInputs";
 import useCheckbox from "../../hooks/useCheckbox";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { postLogin } from "../../utils/requestList";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,6 +33,24 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const id_ = inputs.id.trim();
+    const password_ = inputs.password.trim();
+
+    const param = {
+      mem_id: id_,
+      mem_pw: password_,
+    };
+
+    const res = await postLogin(param);
+    if (res?.result === "success") {
+      sessionStorage.setItem("login_status", "Y");
+      sessionStorage.setItem("id", id_);
+      sessionStorage.setItem("nickname", password_);
+      toast.success("로그인 되었습니다.");
+      navigate("/");
+    } else {
+      toast.error("로그인에 실패했습니다. 아이디, 비밀번호를 확인해주세요.");
+    }
   };
 
   useEffect(() => {
@@ -78,12 +97,11 @@ const Login = () => {
   const isValidationTrue = check_all || (terms && privacy);
 
   const handleLastLogin = async () => {
-    console.log(kakao_account);
-    console.log(auth_object);
-
     if (isValidationTrue) {
       sessionStorage.setItem("access_token", auth_object?.access_token);
       sessionStorage.setItem("refresh_token", auth_object?.refresh_token);
+      sessionStorage.setItem("id", accountInfo.id);
+      sessionStorage.setItem("nickname", accountInfo.nickname);
       sessionStorage.setItem("login_status", "Y");
       navigate("/");
       toast.success("로그인 되었습니다.");
@@ -197,7 +215,7 @@ const Login = () => {
             </div>
 
             <div className="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-              <div  className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <div>
                   <div className="mt-2">
                     <input

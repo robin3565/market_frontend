@@ -1,14 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../organisms/Navbar";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-// import { geo } from "../json/geo";
 import {
   generateClickedMarkerHtml,
   generateMarkerHtml,
 } from "../utils/requestHtml";
-import { geoCode } from "../json/geoCode";
+// import { geoCode } from "../json/geoCode";
 import { HOME_PATH } from "../config/config_home";
-import { getAllMarketData, getCommentData, getMarketData, naverSearchData } from "../utils/requestList";
+import {
+  getAllMarketData,
+  getCommentData,
+  getMarketData,
+  naverSearchData,
+  getAllGeoCodeData,
+} from "../utils/requestList";
 import { MarkerClustering } from "../MarkerClustering";
 import SwiperCore, { Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -20,13 +25,14 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
   let selectedMarker = null; // 선택한 마커 상태를 저장하는 변수
   const [clickedData, setClickedData] = useState([]);
   const [geo, setGeo] = useState([]);
+  const [geoCode, setGeoCodeData] = useState([]);
 
   const { naver } = window;
 
   // 마커 이동
   const moveToMarket = (item, map) => {
-    const latitude = item.market_latitude;
-    const longitude = item.market_longitude;
+    const latitude = item.latitude;
+    const longitude = item.longitude;
     const mapLatLng = new naver.maps.LatLng(
       Number(latitude),
       Number(longitude)
@@ -37,7 +43,7 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
   // 마커 클릭 이벤트 핸들러 함수
   const markerClickEvent = (marker, infowindow, item, map) => {
     naver.maps.Event.addListener(marker, "click", async () => {
-      const uid = item.uid;
+      const uid = item.market_uid;
       const name = item.market_name;
       // map.setZoom(16);
 
@@ -91,6 +97,16 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
   };
 
   useEffect(() => {
+    const fetchGeoCodeData = async () => {
+      const geoRes = await getAllGeoCodeData();
+      console.log(geoRes);
+      setGeoCodeData(geoRes);
+    };
+
+    fetchGeoCodeData();
+  }, []);
+
+  useEffect(() => {
     const initializeMap = async () => {
       if (!mapElement.current || !naver) return;
 
@@ -119,7 +135,7 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
       // Custom control
       const locationBtnHtml = `<div id="custom-control">
       <button type="button" class="bg-white p-1.5 border border-black">
-        <img class="h-5" src="${HOME_PATH}/img/compass.png"/>
+        <img class="h-4 w-4" src="${HOME_PATH}/img/compass.png"/>
       </button>
       </div>`;
       naver.maps.Event.once(map, "init", function () {
@@ -140,58 +156,65 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
           }
         );
       });
-      
+
       // Display markers
       let markers = [];
-      const getGeo = await getAllMarketData();
-      setGeo(getGeo);
-      // 모든 데이터 가져오기
-      getGeo?.forEach((item) => {
-        const latitude = item.market_latitude;
-        const longitude = item.market_longitude;
-        const address = item.market_location_a;
-        const name = item.market_name;
+      const response = await getAllMarketData();
+      let getGeo = [];
+      if (response?.result === "success") {
+        getGeo = response?.marketList;
+        setGeo(getGeo);
+        // 모든 데이터 가져오기
+        getGeo?.forEach((item) => {
+          const latitude = item.latitude;
+          const longitude = item.longitude;
+          const address = item.market_location_a;
+          const name = item.market_name;
 
-        const marker = new naver.maps.Marker({
-          position: new naver.maps.LatLng(latitude, longitude),
-          map: map,
-          icon: {
-            content: generateMarkerHtml(name),
-            size: new naver.maps.Size(10, 10),
-          },
+          const marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(latitude, longitude),
+            map: map,
+            icon: {
+              content: generateMarkerHtml(name),
+              size: new naver.maps.Size(10, 10),
+            },
+          });
+
+          markers.push(marker);
+
+          const contentString = `
+          <div class="p-2">
+          <p class="font-semibold">${name}</p>
+          <p class="text-sm">${address}</p>
+        </div>`;
+
+          const infowindow = new naver.maps.InfoWindow({
+            content: contentString,
+            disableAnchor: true,
+            anchorSkew: false,
+            borderColor: "#0074FF",
+            maxWidth: 200,
+            backgroundColor: "#FFF",
+            zIndex: 99,
+            pixelOffset: new naver.maps.Point(20, -10),
+            // anchorSize: new naver.maps.Size(30, 30),
+          });
+
+          markerClickEvent(marker, infowindow, item, map);
+
+          naver.maps.Event.addListener(marker, "mouseover", () => {
+            // 말풍선 추가
+            if (infowindow.getMap()) {
+              infowindow.close();
+            } else {
+              infowindow.open(map, marker);
+            }
+          });
         });
-
-        markers.push(marker);
-
-        const contentString = `
-        <div class="p-2">
-        <p class="font-semibold">${name}</p>
-        <p class="text-sm">${address}</p>
-      </div>`;
-
-        const infowindow = new naver.maps.InfoWindow({
-          content: contentString,
-          disableAnchor: true,
-          anchorSkew: false,
-          borderColor: "#0074FF",
-          maxWidth: 200,
-          backgroundColor: "#FFF",
-          zIndex: 99,
-          pixelOffset: new naver.maps.Point(20, -10),
-          // anchorSize: new naver.maps.Size(30, 30),
-        });
-
-        markerClickEvent(marker, infowindow, item, map);
-
-        naver.maps.Event.addListener(marker, "mouseover", () => {
-          // 말풍선 추가
-          if (infowindow.getMap()) {
-            infowindow.close();
-          } else {
-            infowindow.open(map, marker);
-          }
-        });
-      });
+      } else {
+        alert("데이터를 불러오는 데 실패했습니다. 잠시후 다시 시도해주세요.");
+        navigate("/");
+      }
 
       const clustererOptions = {
         maxZoom: 13,
@@ -239,7 +262,7 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
 
   function chunkArray(array, size) {
     const result = [];
-    for (let i = 0; i < array.length; i += size) {
+    for (let i = 0; i < array?.length; i += size) {
       result.push(array.slice(i, i + size));
     }
     return result;
@@ -252,22 +275,23 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
         <div className="md:mx-28 md:p-3.5 flex flex-col md:flex-row items-center justify-center flex-wrap">
           {chunkArray(geoCode, 5).map((group, groupIdx) => (
             <div key={groupIdx} className="flex">
-              {group.map( (item, itemIdx) => {
+              {group.map((item, itemIdx) => {
                 return (
                   <p
                     key={itemIdx}
                     className="cursor-pointer"
-                    onClick={async() => {
+                    onClick={async () => {
                       moveToMarket(item, mapInit);
-                      const data = await getMarketData(item.name);
-                      setClickedData(data)
-                      navigate(`/map/${item.code}`, {
+                      const data = await getMarketData(item.geo_name);
+                      setClickedData(data);
+                      navigate(`/map/${item.geo_code}`, {
                         state: { data: data },
                       });
                     }}
                   >
-                    <span className="md:m-2 m-1 border border-prigray-600 rounded-full px-2.5 py-1 text-prigray-600 shadow-md">
-                      {item.name}
+                    <span className="md:m-2 m-1 border border-prigray-600 rounded-full px-2.5 py-1 
+                    text-prigray-600 shadow-md hover:text-white hover:bg-primary-500">
+                      {item.geo_name}
                     </span>
                   </p>
                 );
@@ -287,24 +311,29 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
             className="flex items-center justify-center flex-nowrap h-full"
           >
             {chunkArray(geoCode, 4).map((group, groupIdx) => (
-              <SwiperSlide key={groupIdx} className="flex items-center justify-center h-full">
-                {group.map( (item, itemIdx) => {
-                  const data = geo.filter((i) => i["시도군"] === item.name);
+              <SwiperSlide
+                key={groupIdx}
+                className="flex items-center justify-center h-full"
+              >
+                {group.map((item, itemIdx) => {
                   return (
-                    <Link
+                    <p
                       key={itemIdx}
-                      to={`/map/${item.code}`}
-                      state={{ data: data }}
-                      onClick={async() => {
+                      className="cursor-pointer"
+                      onClick={async () => {
                         moveToMarket(item, mapInit);
-                        const data_ = await getMarketData(item.name);
-                        console.log(data_)
+                        const data = await getMarketData(item.geo_name);
+                        setClickedData(data);
+                        navigate(`/map/${item.geo_code}`, {
+                          state: { data: data },
+                        });
                       }}
                     >
-                      <span className="mx-1 border border-prigray-600 rounded-full px-2.5 py-1 text-prigray-600 shadow-md">
-                        {item.name}
+                      <span className="mx-1 border border-prigray-600 rounded-full px-2.5 py-1 text-prigray-600 shadow-md 
+                      hover:bg-primary-500 hover:text-white">
+                        {item.geo_name}
                       </span>
-                    </Link>
+                    </p>
                   );
                 })}
               </SwiperSlide>

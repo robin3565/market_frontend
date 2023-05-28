@@ -3,14 +3,9 @@ import { comment } from "../json/comment";
 import { BACK_PATH } from "../config/config_home"
 
 // naver 블로그 API
-export async function naverSearchData(query) {
+export async function naverSearchData(word) {
   try {
-    const response = await axios.get("http://localhost:3005/search/blog", {
-      params: {
-        query: query,
-      },
-    });
-
+    const response = await axios.get(`${BACK_PATH}/naverSearch?word=${word}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -25,7 +20,7 @@ export async function getCommentData(query) {
 }
 
 // 시장 데이터 가져오기 - 필터링
-export const getMarketData = async (word="") => {
+export const getMarketData = async (word = "") => {
   try {
     const res = await axios.get(`${BACK_PATH}/search?word=${word}`);
     return res.data;
@@ -47,9 +42,57 @@ export const getAllMarketData = async () => {
 // 지리정보 데이터 가져오기
 export const getAllGeoCodeData = async () => {
   try {
-    const res = await axios.get(`${BACK_PATH}/marketList`);
-    return res.data;
+    const res = await axios.get(`${BACK_PATH}/geoList`);
+    return res.data.geoList;
   } catch (err) {
     console.log(err);
   }
 };
+
+export const getSearchData = async (word) => {
+  try {
+    const res = await axios.get(`${BACK_PATH}/autoComplete?word=${word}`);
+    return res.data.list;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// 회원가입
+export const postSignup = async (param) => {
+  const params = {
+    ...param,
+
+  }
+
+  try {
+    const res = await axios.post(`${BACK_PATH}/join`, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+    console.log(res)
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+
+}
+
+// 로그인
+export const postLogin = async (param) => {
+  const params = {
+    ...param,
+  }
+
+  try {
+    const res = await axios.post(`${BACK_PATH}/login`, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+}

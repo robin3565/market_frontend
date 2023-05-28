@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../config/config_home";
+import { toast } from "react-hot-toast";
 
-const Market = ({ mapInit }) => {
+const Market = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const data = location.state?.data;
-  const markerData = location.state?.markerData?.items;
-  const commentData = location.state?.commentData;
 
-  const { naver } = window;
+  const markerData = location.state?.markerData?.items || [];
+  const commentData = location.state?.commentData || [];
+
+  useEffect(() => {
+    // 잘못된 경로
+    if (!data) {
+      navigate("/map");
+    }
+  }, []);
 
   return (
     <>
-    <div className="md:w-1/4 w-full absolute h-87/100 bg-white the_second">
+      <div className="md:w-1/4 w-full absolute h-87/100 bg-white the_second">
         <div className="h-full border border-gray-200 shadow-md box-border overflow-y-auto">
           <div className="">
             {/* 시장 정보 */}
@@ -39,15 +46,39 @@ const Market = ({ mapInit }) => {
 
               {/* 설명 */}
               <div className="px-6 py-4">
-                <p className="text-prigray-400">{data["시도군"]}</p>
+                <p className="text-prigray-400">{data?.geo_info}</p>
                 <p className="text-tblack font-semibold text-2xl">
-                  {data["시장정보"]}
+                  {data?.market_name}
                 </p>
                 <div className="mt-1 text-tblack">
-                  <p>{data["도로명 주소"]}</p>
-                  <p>{data["시장유형"]}</p>
-                  <p>{data["시장개설주기"]}</p>
-                  <p>{data["취급품목"]}</p>
+                  <div className="flex items-center pb-1">
+                    <img
+                      className="w-5 h-5 mr-1"
+                      src={`${HOME_PATH}/img/icon_location.png`}
+                    />
+                    <p>{data?.market_location_a}</p>
+                  </div>
+                  <div className="flex items-center py-1">
+                    <img
+                      className="w-5 h-5 mr-1"
+                      src={`${HOME_PATH}/img/icon_type.png`}
+                    />
+                    <p>{data?.market_type}</p>
+                  </div>
+                  <div className="flex items-center py-1">
+                    <img
+                      className="w-5 h-5 mr-1"
+                      src={`${HOME_PATH}/img/icon_period.png`}
+                    />
+                    <p>{data?.market_period}</p>
+                  </div>
+                  <div className="flex items-center pt-1">
+                    <img
+                      className="w-5 h-5 mr-1"
+                      src={`${HOME_PATH}/img/icon_item.png`}
+                    />
+                    <p>{data?.market_item}</p>
+                  </div>
                 </div>
 
                 <div className="border-t border-prigray-200 my-4 pt-4 rounded-lg">
@@ -122,7 +153,7 @@ const Market = ({ mapInit }) => {
                   </div>
                 </div>
               ))}
-              {commentData.length === 0 && (
+              {commentData?.length === 0 && (
                 <div className="my-3">
                   <p>등록된 댓글이 없습니다.</p>
                 </div>
