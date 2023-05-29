@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 const Curation = () => {
   return (
-    <div className="h-screen py-20">
+    <div className="py-20">
       {/* 큐레이션 미리보기 */}
       <div className="w-full mb-10">
         <div className="mx-auto sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl">
-          <div className="mx-5">
+          <div className="">
             {/* 큐레이션 아이템 01 */}
             <Link to="/curation/gwangju">
               <div className="mt-8 text-white transition ">
