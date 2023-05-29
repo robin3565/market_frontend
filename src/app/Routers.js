@@ -15,6 +15,7 @@ import {
   Signup,
   Gwangju,
   Malbau,
+  FindId,
 } from "../pages";
 import CurationLayout from "../layout/CurationLayout";
 import Mypage from "../pages/auth/Mypage";
@@ -47,6 +48,7 @@ const Routers = ({ mapInit, saveMapInit, myLocation }) => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot" element={<Forgot />} />
+        <Route path="/findId" element={<FindId />} />
       </Route>
       <Route element={<MainLayout login={login} />}>
         <Route path="/" element={<Home />} />

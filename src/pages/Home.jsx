@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { HOME_PATH } from "../config/config_home";
-import SwiperCore, { Navigation, Pagination } from "swiper";
+import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const Home = () => {
@@ -120,9 +120,11 @@ const Home = () => {
       <div className="w-full mb-10">
         <div className="mx-auto sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl">
           <div className="border-b border-prigray-300 mt-10">
-            <p className="text-2xl font-semibold mb-3 ml-3">월간 큐레이션</p>
+            <p className="text-2xl font-semibold mb-3 md:ml-0 ml-3">
+              월간 큐레이션
+            </p>
           </div>
-          <div className="mx-5">
+          <div className="">
             {/* 큐레이션 아이템 01 */}
             <Link to="/curation/gwangju">
               <div className="mt-8 text-white transition ">
@@ -134,9 +136,7 @@ const Home = () => {
                     height: "300px",
                   }}
                 >
-                  <div
-                    className="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed bg-black/25 hover:bg-black/50 transition"
-                  >
+                  <div className="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed bg-black/25 hover:bg-black/50 transition">
                     <div className="flex justify-center items-center h-full">
                       <div className="text-center px-6 md:px-12">
                         <div className="title_a">

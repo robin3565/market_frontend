@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../config/config_home";
-import { toast } from "react-hot-toast";
 
 const Market = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const data = location.state?.data;
+  const img_lg_url =
+    data.img_lg_url === "" ? "basic_market.jpg" : data.img_lg_url;
+  console.log(img_lg_url);
 
   const markerData = location.state?.markerData?.items || [];
   const commentData = location.state?.commentData || [];
@@ -40,7 +42,7 @@ const Market = () => {
 
                 <img
                   className="rounded-tr-lg rounded-tl-lg"
-                  src={`${HOME_PATH}/img/test_img.jpg`}
+                  src={`${HOME_PATH}/img/market/lg/${img_lg_url}`}
                 />
               </div>
 
@@ -81,7 +83,7 @@ const Market = () => {
                   </div>
                 </div>
 
-                <div className="border-t border-prigray-200 my-4 pt-4 rounded-lg">
+                {/* <div className="border-t border-prigray-200 my-4 pt-4 rounded-lg">
                   <p className="text-tblack">
                     서울의 대표적인 전통 시장인 남대문시장은 600여 년의 역사를
                     자랑하는 장소입니다. 그 중심에는 현대적인 쇼핑몰과 골목
@@ -89,7 +91,7 @@ const Market = () => {
                     액세서리, 가방, 신발 등 다양한 상품을 구매할 수 있으며, 한국
                     전통 공예품과 문화적인 소품들도 찾아볼 수 있습니다.
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
 
