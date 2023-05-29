@@ -26,6 +26,7 @@ export const getMarketData = async (word = "") => {
     return res.data;
   } catch (err) {
     console.log(err);
+    return false;
   }
 };
 
@@ -36,6 +37,7 @@ export const getAllMarketData = async () => {
     return res.data;
   } catch (err) {
     console.log(err);
+    return false;
   }
 };
 
@@ -46,6 +48,7 @@ export const getAllGeoCodeData = async () => {
     return res.data.geoList;
   } catch (err) {
     console.log(err);
+    return false;
   }
 };
 
@@ -55,6 +58,7 @@ export const getSearchData = async (word) => {
     return res.data.list;
   } catch (err) {
     console.log(err);
+    return false;
   }
 }
 
@@ -75,6 +79,7 @@ export const postSignup = async (param) => {
     return res.data;
   } catch (err) {
     console.log(err);
+    return false;
   }
 
 }
@@ -94,5 +99,25 @@ export const postLogin = async (param) => {
     return res.data;
   } catch (err) {
     console.log(err);
+    return false;
   }
 }
+
+// 중복 체크
+export const checkDuplicateId = async (param) => {
+  const params = {
+    ...param,
+  }
+
+  try {
+    const response = await axios.post(`${BACK_PATH}/duplicateId`, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+    return response.data.result;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};

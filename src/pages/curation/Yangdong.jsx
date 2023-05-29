@@ -94,7 +94,7 @@ const Yangdong = () => {
             <img
               src={`${HOME_PATH}/img/market/old_양동시장_1.jpg`}
               style={{ objectFit: "contain" }}
-              alt="Image 1"
+              alt="old_양동시장_1"
             />
             <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
               <p className="text-white text-xl font-bold">Data 1</p>
@@ -106,7 +106,7 @@ const Yangdong = () => {
             <img
               src={`${HOME_PATH}/img/market/old_양동시장_2.jpg`}
               style={{ objectFit: "contain" }}
-              alt="Image 2"
+              alt="old_양동시장_2"
             />
             <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
               <p className="text-white text-xl font-bold">Data 2</p>
@@ -118,7 +118,7 @@ const Yangdong = () => {
             <img
               src={`${HOME_PATH}/img/market/old_양동시장_3.jpg`}
               style={{ objectFit: "contain" }}
-              alt="Image 3"
+              alt="old_양동시장_3"
             />
             <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
               <p className="text-white text-xl font-bold">Data 3</p>

@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../organisms/Navbar";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import {
   generateClickedMarkerHtml,
   generateMarkerHtml,
 } from "../utils/requestHtml";
-// import { geoCode } from "../json/geoCode";
 import { HOME_PATH } from "../config/config_home";
 import {
   getAllMarketData,
@@ -99,7 +98,6 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
   useEffect(() => {
     const fetchGeoCodeData = async () => {
       const geoRes = await getAllGeoCodeData();
-      console.log(geoRes);
       setGeoCodeData(geoRes);
     };
 

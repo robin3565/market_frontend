@@ -3,8 +3,8 @@ import Routers from "./Routers";
 import { useEffect, useState } from "react";
 import ScrollToTop from "../utils/ScrollToTop";
 import { Toaster } from "react-hot-toast";
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
+// import NProgress from 'nprogress';
+// import 'nprogress/nprogress.css';
 
 function App() {
   const [mapInit, setMapInit] = useState(null);

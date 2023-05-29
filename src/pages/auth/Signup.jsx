@@ -1,16 +1,19 @@
-import React from "react";
-import Logo from "../../atoms/Logo";
+import React, { useEffect, useState } from "react";
 import useCheckbox from "../../hooks/useCheckbox";
 import { useForm } from "react-hook-form";
-import { postSignup } from "../../utils/requestList";
+import { checkDuplicateId, postSignup } from "../../utils/requestList";
 import { toast } from "react-hot-toast";
+import { throttle } from "lodash";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const {
+    watch,
     register,
     handleSubmit,
     setError,
-    formState: { isSubmitting, isDirty, errors },
+    clearErrors,
+    formState: { isDirty, errors },
   } = useForm();
   const [
     { check_all, terms, privacy, subscribe },
@@ -22,8 +25,12 @@ const Signup = () => {
     privacy: false,
     subscribe: false,
   });
+  const [isDuplicate, setDuplicate] = useState(false);
+  const navigate = useNavigate();
 
-  const isValidationTrue = check_all || (terms && privacy);
+  const isValidationTrue =
+    (check_all && !isDuplicate) || (terms && privacy && !isDuplicate);
+
   const onSubmit = async (data, e) => {
     // 비밀번호 확인
     if (data.password !== data.password_confirm) {
@@ -32,13 +39,44 @@ const Signup = () => {
         { message: "비밀번호가 일치하지 않습니다." },
         { shouldFocus: true }
       );
+      return false;
+    }
+
+    // 아이디 중복 확인
+    const isDuplicate = await checkDuplicateId({
+      mem_id: data.id,
+    });
+    if (isDuplicate === "duplicate") {
+      setError(
+        "id",
+        {
+          message: "중복된 계정이 있습니다.",
+        },
+        { shouldFocus: true }
+      );
+      return false;
+    }
+
+    // 이메일 중복 확인
+    const isDuplicateEmail = await checkDuplicateId({
+      mem_email: data.email,
+    });
+    if (isDuplicateEmail === "duplicate") {
+      setError(
+        "email",
+        {
+          message: "중복된 이메일이 있습니다.",
+        },
+        { shouldFocus: true }
+      );
+      return false;
     }
 
     const id_ = data.id.trim();
     const password_ = data.password.trim();
     const email_ = data.email.trim();
     const nickname_ = data.nickname.trim();
-    const marketing_flag = subscribe == true ? "Y" : "N";
+    const marketing_flag = subscribe === true ? "Y" : "N";
 
     const param = {
       mem_id: id_,
@@ -51,11 +89,69 @@ const Signup = () => {
     const res = await postSignup(param);
     if (res?.result === "success") {
       toast.success("회원가입 완료!");
+      navigate('/login')
     } else {
       toast.error("회원가입에 실패하였습니다. 다시 시도해주세요.");
     }
   };
   const onError = (errors, e) => console.log(errors, e);
+
+  const handleIdChange = throttle(async (id) => {
+    if (id) {
+      const id_ = id.trim();
+      clearErrors("id");
+      const res = await checkDuplicateId({
+        mem_id: id_,
+      });
+      if (res === "duplicate") {
+        setDuplicate(true);
+        setError(
+          "id",
+          {
+            message: "중복된 계정이 있습니다.",
+          },
+          { shouldFocus: true }
+        );
+      } else if (res === "none") {
+        setDuplicate(false);
+      }
+      console.log(res);
+    }
+  }, 300);
+
+  const handleEmailChange = throttle(async (email) => {
+    if (email) {
+      const email_ = email.trim();
+      clearErrors("email");
+      const res = await checkDuplicateId({
+        mem_email: email_,
+      });
+      if (res === "duplicate") {
+        setDuplicate(true);
+        setError(
+          "email",
+          {
+            message: "중복된 이메일이 있습니다.",
+          },
+          { shouldFocus: true }
+        );
+      } else if (res === "none") {
+        setDuplicate(false);
+      }
+      console.log(res);
+    }
+  }, 300);
+
+  useEffect(() => {
+    // id 필드의 값 변경 감지
+    const id = watch("id");
+    handleIdChange(id);
+  }, [watch("id")]);
+
+  useEffect(() => {
+    const email = watch("email");
+    handleEmailChange(email);
+  }, [watch("email")]);
 
   return (
     <div className="w-full h-full flex flex-col items-center mx-auto md:my-24 my-8">
@@ -78,6 +174,7 @@ const Signup = () => {
                   type="id"
                   autoComplete="id"
                   placeholder="아이디"
+                  onChange={handleIdChange}
                   aria-invalid={
                     !isDirty ? undefined : errors.id ? "true" : "false"
                   }
@@ -100,7 +197,11 @@ const Signup = () => {
                     },
                   })}
                 />
-                {errors.id && <small className="text-primary-500" role="alert">{errors.id.message}</small>}
+                {errors.id && (
+                  <small className="text-primary-500" role="alert">
+                    {errors.id.message}
+                  </small>
+                )}
               </div>
             </div>
 
@@ -131,7 +232,9 @@ const Signup = () => {
                   })}
                 />
                 {errors.password && (
-                  <small className="text-primary-500" role="alert">{errors.password.message}</small>
+                  <small className="text-primary-500" role="alert">
+                    {errors.password.message}
+                  </small>
                 )}
               </div>
             </div>
@@ -150,7 +253,9 @@ const Signup = () => {
                 />
               </div>
               {errors.password_confirm && (
-                <small className="text-primary-500" role="alert">{errors.password_confirm.message}</small>
+                <small className="text-primary-500" role="alert">
+                  {errors.password_confirm.message}
+                </small>
               )}
             </div>
             <div>
@@ -192,7 +297,9 @@ const Signup = () => {
                 />
               </div>
               {errors.email && (
-                <small className="text-primary-500" role="alert">{errors.email.message}</small>
+                <small className="text-primary-500" role="alert">
+                  {errors.email.message}
+                </small>
               )}
             </div>
 

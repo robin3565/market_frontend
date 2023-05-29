@@ -1,19 +1,7 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const Curation = () => {
-  const introRef = useRef(null);
-  const storesRef = useRef(null);
-
-  // 특정 ID가 있는 위치로 스크롤 이동 함수
-  const scrollToSection = (ref) => {
-    if (ref && ref.current) {
-      ref.current.scrollIntoView({
-        behavior: "smooth",
-      });
-    }
-  };
-
   return (
     <div className="h-screen py-20">
       {/* 큐레이션 미리보기 */}
@@ -22,7 +10,7 @@ const Curation = () => {
           <div className="mx-5">
             {/* 큐레이션 아이템 01 */}
             <Link to="/curation/gwangju">
-              <div className="mt-8">
+              <div className="mt-8 text-white transition ">
                 <div
                   className="relative overflow-hidden bg-no-repeat bg-cover"
                   style={{
@@ -35,7 +23,7 @@ const Curation = () => {
                     className="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed bg-black/25 hover:bg-black/50 transition"
                   >
                     <div className="flex justify-center items-center h-full">
-                      <div className="text-center text-white px-6 md:px-12">
+                      <div className="text-center px-6 md:px-12">
                         <div className="title_a">
                           <p className="text-3xl md:text-4xl font-bold tracking-tight mb-2.5">
                             6월의 시장
@@ -66,7 +54,7 @@ const Curation = () => {
                 >
                   <div className="flex justify-center items-center h-full">
                     <div className="text-center text-white px-6 md:px-12">
-                      <div className="title_b">
+                      <div className="title_a">
                         <p className="text-3xl md:text-4xl font-bold tracking-tight mb-2.5">
                           7월의 시장
                         </p>

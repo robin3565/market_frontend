@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Logo from "../../atoms/Logo";
 import useInputs from "../../hooks/useInputs";
 import useCheckbox from "../../hooks/useCheckbox";
 import { useNavigate } from "react-router-dom";
@@ -121,7 +120,9 @@ const Login = () => {
               <h3 className="font-bold text-3xl">로그인</h3>
             </div>
 
-            <div className="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="w-full bg-white rounded-lg shadow-lg 
+            dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 
+            dark:border-gray-700">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <div className="flex items-center justify-center w-full mb-5 h-12 rounded-lg bg-kakao font-semibold">
                   <button className="w-full" onClick={handleKakaoLogin}>
@@ -192,12 +193,18 @@ const Login = () => {
                       </button>
                     </div>
                   </form>
-                  <div className="mt-4 flex items-center justify-center">
+                  <div className="mt-4 flex flex-col items-center justify-center">
                     <a
                       href="/signup"
-                      className="font-semibold underline flex items-center justify-center"
+                      className="mb-1.5 font-semibold underline flex items-center justify-center"
                     >
                       회원가입하기
+                    </a>
+                    <a
+                      href="/findId"
+                      className="font-semibold underline flex items-center justify-center"
+                    >
+                      아이디 찾기
                     </a>
                   </div>
                 </div>
