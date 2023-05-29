@@ -94,7 +94,7 @@ const SearchBox = ({ mapInit }) => {
             className="w-10 h-10 md:hidden block"
             type="button"
             onClick={() => {
-              navigate(-1);
+              navigate('/map');
             }}
           >
             <img

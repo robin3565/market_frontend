@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { gwangju_store } from "../../json/gwangju_store";
 import { HOME_PATH } from "../../config/config_home";
+import { requestStoreData } from "../../utils/requestList";
 
 const Yangdong = () => {
   const introRef = useRef(null);
@@ -14,6 +14,8 @@ const Yangdong = () => {
       });
     }
   };
+
+  const gwangju_store = requestStoreData("양동시장");
 
   return (
     <div>
@@ -88,40 +90,40 @@ const Yangdong = () => {
           </div>
         </div>
         <div className="md:w-3/4 w-18/20 mx-auto flex flex-col md:flex-row justify-between mt-16">
-          <div
-            className="relative md:mx-4"
-          >
+          <div className="relative md:mx-4">
             <img
               src={`${HOME_PATH}/img/market/old_양동시장_1.jpg`}
               style={{ objectFit: "contain" }}
               alt="old_양동시장_1"
             />
             <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
-              <p className="text-white text-xl font-bold">Data 1</p>
+              <p className="text-white text-xl font-bold">
+                @광주 옛사진 - 양동시장
+              </p>
             </div>
           </div>
-          <div
-            className="relative md:mx-4 "
-          >
+          <div className="relative md:mx-4 ">
             <img
               src={`${HOME_PATH}/img/market/old_양동시장_2.jpg`}
               style={{ objectFit: "contain" }}
               alt="old_양동시장_2"
             />
             <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
-              <p className="text-white text-xl font-bold">Data 2</p>
+              <p className="text-white text-xl font-bold">
+                @광주 100년 사진 - 양동시장
+              </p>
             </div>
           </div>
-          <div
-            className="relative md:mx-4"
-          >
+          <div className="relative md:mx-4">
             <img
               src={`${HOME_PATH}/img/market/old_양동시장_3.jpg`}
               style={{ objectFit: "contain" }}
               alt="old_양동시장_3"
             />
             <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
-              <p className="text-white text-xl font-bold">Data 3</p>
+              <p className="text-white text-xl font-bold">
+                @광주 100년 사진 - 양동 복개상가
+              </p>
             </div>
           </div>
         </div>
@@ -227,11 +229,10 @@ const Yangdong = () => {
                   시장 인심이 가득한 노포 맛집
                 </p>
                 <p className="leading-6 mt-5">
-                  오래된 노포 맛집은 전통적인 맛과 정서를 그대로 전해주는
-                  곳으로, 그 독특한 매력으로 많은 사람들에게 사랑 받고 있다.
-                  깊은 맛은 물론 오랜 세월 동안 전해져온 비법 레시피와 정성이
-                  담겨있어, 한 그릇 음식만으로도 몸과 마음이 따뜻해지는 기분을
-                  느낄 수 있다.
+                  오래된 노포 맛집은 전통적인 맛과 정서를 그대로 전해주는 곳이자
+                  독특한 매력으로 많은 사람들에게 사랑받고 있다. 깊은 맛은 물론
+                  오랜 세월 동안 전해져온 비법 레시피와 정성이 담겨있어, 한 그릇
+                  음식만으로도 몸과 마음이 따뜻해지는 기분을 느낄 수 있다.
                 </p>
               </div>
               <div className="flex flex-wrap justify-center items-center">
@@ -265,14 +266,15 @@ const Yangdong = () => {
               <div className="w-full md:w-1/3">
                 <p className="text-prigray-600">#양동시장 #다양한 #반찬</p>
                 <p className="text-2xl font-semibold my-2">
-                  시장 인심이 가득한 노포 맛집
+                  종류만 수 십 가지, 반찬 가게
                 </p>
                 <p className="leading-6 mt-5">
-                  오래된 노포 맛집은 전통적인 맛과 정서를 그대로 전해주는
-                  곳으로, 그 독특한 매력으로 많은 사람들에게 사랑 받고 있다.
-                  깊은 맛은 물론 오랜 세월 동안 전해져온 비법 레시피와 정성이
-                  담겨있어, 한 그릇 음식만으로도 몸과 마음이 따뜻해지는 기분을
-                  느낄 수 있다.
+                  시장 한편에 늘어져 있는 반찬들은 참새가 방앗간 못 지나가듯
+                  사람들의 발걸음을 멈추게 만든다. 언뜻 보아도 수 십 가지, 김치
+                  종류만 열 다 가지가 넘는 반찬들 중 먹고 싶은 걸 고르다 보면
+                  어느새 한 봉지 가득 담아 가게 된다. 맛이 보장되는 전라도
+                  반찬들, 시장에서만 맛볼 수 있는 진한 젓갈과 반찬의 맛에 오늘도
+                  반찬가게 앞엔 사람이 가득하다.
                 </p>
               </div>
               <div className="flex flex-wrap justify-center items-center">

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { comment } from "../json/comment";
 import { BACK_PATH } from "../config/config_home"
+import { gwangju_store } from "../json/gwangju_store";
 
 // naver 블로그 API
 export async function naverSearchData(word) {
@@ -151,4 +152,10 @@ export const sendEmail = async (email) => {
         console.log(err);
         return false;
     }
+}
+
+// 시장 데이터 가져오기
+export const requestStoreData = (name) => {
+    const data = gwangju_store.filter((store) => store["시장명"] === name);
+    return data;
 }

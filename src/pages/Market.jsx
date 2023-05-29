@@ -131,7 +131,7 @@ const Market = () => {
               })}
             </div>
 
-            <div className="border border-prigray-200 m-4 rounded-lg bg-white px-6 py-4">
+            <div className="border border-prigray-200 m-4 rounded-lg bg-white px-6 py-4 mb-8">
               <div>
                 <span className="font-semibold text-tblack text-xl">댓글</span>
               </div>

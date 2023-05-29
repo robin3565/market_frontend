@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useInputs from "../../hooks/useInputs";
 import { sendEmail } from "../../utils/requestList";
+import { toast } from "react-hot-toast";
 
 const Forgot = () => {
   const [{ id, email }, handleInputChange] = useInputs({
@@ -15,11 +16,16 @@ const Forgot = () => {
 
   const handleFindPassword = async (e) => {
     e.preventDefault();
-    
+
     const isValidEmail = validateEmail(email);
-    console.log(isValidEmail)
-    const email_ = email.trim();
-    // const res = await sendEmail(email_)
+    if (isValidEmail) {
+      const email_ = email.trim();
+      const res = await sendEmail(email_);
+      console.log(res)
+    } else {
+      toast.error("이메일 형식을 확인해주세요.");
+      return;
+    }
   };
 
   return (
