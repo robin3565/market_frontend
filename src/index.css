@@ -63,7 +63,7 @@
 .swiper-button-prev,
 .swiper-button-next {
     color: #000;
-    background-color: #fff;
+    /* background-color: #fff; */
 }
 
 .swiper-button-prev::after,
@@ -105,6 +105,10 @@
 
 .main-btn-next {
     right: calc(50% - 676px);
+}
+
+.swiper-pagination-bullet {
+    background-color: #3e3e3e;
 }
 
 /* #custom-control {

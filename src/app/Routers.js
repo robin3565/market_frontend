@@ -16,6 +16,7 @@ import {
   Gwangju,
   Malbau,
   FindId,
+  DaeIn,
 } from "../pages";
 import CurationLayout from "../layout/CurationLayout";
 import Mypage from "../pages/auth/Mypage";
@@ -57,6 +58,7 @@ const Routers = ({ mapInit, saveMapInit, myLocation }) => {
       <Route element={<CurationLayout login={login} />}>
         <Route path="/curation/yangdong" element={<Yangdong />} />
         <Route path="/curation/malbau" element={<Malbau />} />
+        <Route path="/curation/daein" element={<DaeIn />} />
         <Route path="/curation/gwangju" element={<Gwangju />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/mypage/profile" element={<Profile />} />

@@ -3,22 +3,9 @@ import { Link } from "react-router-dom";
 import { HOME_PATH } from "../config/config_home";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { handleNextClick, handlePrevClick } from "../utils/events";
 
 const Home = () => {
-  const handlePrevClick = () => {
-    const swiper = document.querySelector(".swiper-container")?.swiper;
-    if (swiper) {
-      swiper.slidePrev();
-    }
-  };
-
-  const handleNextClick = () => {
-    const swiper = document.querySelector(".swiper-container")?.swiper;
-    if (swiper) {
-      swiper.slideNext();
-    }
-  };
-
   useEffect(() => {
     const prevButton = document.querySelector(".swiper-button-prev");
     const nextButton = document.querySelector(".swiper-button-next");
@@ -121,7 +108,7 @@ const Home = () => {
         <div className="mx-auto sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl">
           <div className="border-b border-prigray-300 mt-10">
             <p className="text-2xl font-semibold mb-3 md:ml-0 ml-3">
-              월간 큐레이션
+              이달의 큐레이션
             </p>
           </div>
           <div className="">
@@ -182,6 +169,103 @@ const Home = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="w-full mb-10">
+        <div className="mx-auto sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl">
+          <div className="border-b border-prigray-300 mt-10">
+            <p className="text-2xl font-semibold mb-3 md:ml-0 ml-3">
+              시장 미리보기
+            </p>
+          </div>
+          <div className="flex w-full mt-8">
+            <Swiper slidesPerView={3} navigation>
+              <SwiperSlide>
+                <Link to="/curation/yangdong">
+                  <div
+                    className="border border-gray-200 mx-auto w-full md:w-80 h-80 rounded-lg relative bg-no-repeat bg-cover"
+                    style={{
+                      backgroundImage: `url("/img/market/lg/광주양동시장.jpg")`,
+                    }}
+                  >
+                    <div
+                      className="rounded-lg absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed"
+                      style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
+                    >
+                      <div className="p-4 text-white">
+                        <p className="font-semibold text-2xl mb-2">양동시장</p>
+                        <p>100년 역사, 이야기 가득한 먹거리 시장</p>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </SwiperSlide>
+              <SwiperSlide>
+                <Link to="/curation/malbau">
+                  <div
+                    className="border border-gray-200 mx-auto w-full md:w-80 h-80 rounded-lg relative bg-no-repeat bg-cover"
+                    style={{
+                      backgroundImage: `url("/img/market/lg/말바우시장.jpg")`,
+                    }}
+                  >
+                    <div
+                      className="rounded-lg absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed"
+                      style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
+                    >
+                      <div className="p-4 text-white">
+                        <p className="font-semibold text-2xl mb-2">
+                          말바우시장
+                        </p>
+                        <p>전통 5일장의 옛 모습이 남아있는 시장</p>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </SwiperSlide>
+              <SwiperSlide>
+                <Link to="/curation/daein">
+                  <div
+                    className="border border-gray-200 mx-auto w-full md:w-80 h-80 rounded-lg relative bg-no-repeat bg-cover"
+                    style={{
+                      backgroundImage: `url("/img/market/lg/대인시장.jpg")`,
+                    }}
+                  >
+                    <div
+                      className="rounded-lg absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed"
+                      style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
+                    >
+                      <div className="p-4 text-white">
+                        <p className="font-semibold text-2xl mb-2">대인시장</p>
+                        <p>전통 5일장의 옛 모습이 남아있는 시장</p>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div to="/curation/daein">
+                  <div
+                    className="border border-gray-200 mx-auto w-full md:w-80 h-80 rounded-lg relative bg-no-repeat bg-cover"
+                    style={{
+                      backgroundImage: `url("/img/market/lg/1913송정역시장.jpg")`,
+                    }}
+                  >
+                    <div
+                      className="rounded-lg absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed"
+                      style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
+                    >
+                      <div className="p-4 text-white">
+                        <p className="font-semibold text-2xl mb-2">
+                          송정역시장
+                        </p>
+                        <p>전통 5일장의 옛 모습이 남아있는 시장</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            </Swiper>
           </div>
         </div>
       </div>

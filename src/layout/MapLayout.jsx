@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../organisms/Navbar";
+import { toast } from "react-hot-toast";
 import { Outlet, useNavigate } from "react-router-dom";
 import {
   generateClickedMarkerHtml,
@@ -210,7 +211,7 @@ const MapLayout = ({ mapInit, saveMapInit, myLocation, login }) => {
           });
         });
       } else {
-        alert("데이터를 불러오는 데 실패했습니다. 잠시후 다시 시도해주세요.");
+        toast.error("데이터를 불러오는 데 실패했습니다. 잠시후 다시 시도해주세요.");
         navigate("/");
       }
 

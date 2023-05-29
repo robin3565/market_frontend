@@ -11,4 +11,5 @@ export { default as FindId } from "./auth/FindId";
 export { default as Curation } from "./curation/Curation";
 export { default as Yangdong } from "./curation/Yangdong";
 export { default as Malbau } from "./curation/Malbau";
+export { default as DaeIn } from "./curation/DaeIn";
 export { default as Gwangju } from "./curation/Gwangju";
