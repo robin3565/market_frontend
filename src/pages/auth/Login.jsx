@@ -3,13 +3,16 @@ import useInputs from "../../hooks/useInputs";
 import useCheckbox from "../../hooks/useCheckbox";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { postLogin } from "../../utils/requestList";
-import axios from "axios";
-import { BACK_PATH } from "../../config/config_home";
+import {
+  checkKakaoDuplicate,
+  checkKakaoSignup,
+  postLogin,
+} from "../../utils/requestList";
 
 const Login = () => {
   const navigate = useNavigate();
   const [viewStep, setViewStep] = useState({ first: true, second: false });
+  const [kakaoSignUp, setKakaoSignUp] = useState(false);
   const [inputs, handleInputChange] = useInputs({
     id: "",
     password: "",
@@ -46,7 +49,6 @@ const Login = () => {
     if (res?.result === "success") {
       sessionStorage.setItem("login_status", "Y");
       sessionStorage.setItem("id", id_);
-      sessionStorage.setItem("nickname", password_);
       toast.success("로그인 되었습니다.");
       navigate("/");
     } else {
@@ -62,30 +64,39 @@ const Login = () => {
   const handleKakaoLogin = () => {
     setViewStep({ first: true, second: false });
     // 카카오 로그인 처리
-     window.Kakao.Auth.login({
+    window.Kakao.Auth.login({
       success: (authObj) => {
-        console.log("카카오 로그인 성공:", authObj);
+        // console.log("카카오 로그인 성공:", authObj);
         setAuth_Object(authObj);
 
         // 사용자 정보 가져오기
         window.Kakao.API.request({
           url: "/v2/user/me",
           success: async (response) => {
-            console.log("카카오 사용자 정보:", response);
-            // test to Backend
-             await axios.post(`http://localhost:8085/kakaotalk`, response, {
-              headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-              }
-          });
+            // console.log("카카오 사용자 정보:", response);
 
-            setAccountInfo({
-              ...accountInfo,
-              id: response?.kakao_account?.email,
-              nickname: response?.kakao_account?.email?.split("@")[0] || "",
-            });
-            setKakao_account(response);
-            setViewStep({ first: false, second: true });
+            // 카카오 정보 확인
+            const kakaoRes = await checkKakaoDuplicate(response);
+            const isDuplicated = kakaoRes?.result;
+
+            if (isDuplicated === "none") {
+              setAccountInfo({
+                ...accountInfo,
+                id: response?.kakao_account?.email,
+                nickname: response?.kakao_account?.email?.split("@")[0] || "",
+              });
+              setKakao_account(response);
+              setKakaoSignUp(true);
+              setViewStep({ first: false, second: true });
+            } else if (isDuplicated === "duplicate") {
+              sessionStorage.setItem("login_status", "Y");
+              // sessionStorage.setItem("id", response?.kakao_account?.email);
+              // sessionStorage.setItem("nickname", accountInfo.nickname);
+              toast.success("로그인 되었습니다.");
+              navigate("/");
+            } else {
+              toast.error("로그인에 실패했습니다. 다시 시도해주세요.");
+            }
           },
           fail: (error) => {
             console.error("카카오 사용자 정보 가져오기 실패:", error);
@@ -105,14 +116,19 @@ const Login = () => {
   const isValidationTrue = check_all || (terms && privacy);
 
   const handleLastLogin = async () => {
-    if (isValidationTrue) {
-      sessionStorage.setItem("access_token", auth_object?.access_token);
-      sessionStorage.setItem("refresh_token", auth_object?.refresh_token);
-      sessionStorage.setItem("id", accountInfo.id);
-      sessionStorage.setItem("nickname", accountInfo.nickname);
-      sessionStorage.setItem("login_status", "Y");
-      navigate("/");
-      toast.success("로그인 되었습니다.");
+    if (isValidationTrue && kakaoSignUp) {
+      const kakaoResult = await checkKakaoSignup(kakao_account);
+      if (kakaoResult?.result === "success") {
+        sessionStorage.setItem("access_token", auth_object?.access_token);
+        sessionStorage.setItem("refresh_token", auth_object?.refresh_token);
+        sessionStorage.setItem("id", accountInfo.id);
+        sessionStorage.setItem("nickname", accountInfo.nickname);
+        sessionStorage.setItem("login_status", "Y");
+        navigate("/");
+        toast.success("로그인 되었습니다.");
+      } else {
+        toast.error("로그인에 실패했습니다. 다시 시도해주세요.");
+      }
     } else {
       toast.error("필수 약관에 동의해주세요!");
       return;
@@ -129,9 +145,11 @@ const Login = () => {
               <h3 className="font-bold text-3xl">로그인</h3>
             </div>
 
-            <div className="w-full bg-white rounded-lg shadow-lg 
+            <div
+              className="w-full bg-white rounded-lg shadow-lg 
             dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 
-            dark:border-gray-700">
+            dark:border-gray-700"
+            >
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <div className="flex items-center justify-center w-full mb-5 h-12 rounded-lg bg-kakao font-semibold">
                   <button className="w-full" onClick={handleKakaoLogin}>
@@ -272,7 +290,7 @@ const Login = () => {
                       className="accent-blue-600"
                       onChange={handleCheckAllChange}
                     />
-                    <label for="check_all" className="ml-1.5">
+                    <label htmlFor="check_all" className="ml-1.5">
                       모두 동의합니다
                     </label>
                   </div>
@@ -285,7 +303,7 @@ const Login = () => {
                       className="accent-blue-600"
                       onChange={handleCheckboxChange}
                     />
-                    <label for="terms" className="ml-1.5">
+                    <label htmlFor="terms" className="ml-1.5">
                       이용약관 동의 (필수)
                     </label>
                   </div>
@@ -298,7 +316,7 @@ const Login = () => {
                       className="accent-blue-600"
                       onChange={handleCheckboxChange}
                     />
-                    <label for="privacy" className="ml-1.5">
+                    <label htmlFor="privacy" className="ml-1.5">
                       개인정보 수집/이용 동의 (필수)
                     </label>
                   </div>
@@ -311,7 +329,7 @@ const Login = () => {
                       className="accent-blue-600"
                       onChange={handleCheckboxChange}
                     />
-                    <label for="subscribe" className="ml-1.5">
+                    <label htmlFor="subscribe" className="ml-1.5">
                       뉴스레터 및 마케팅 정보 수신 동의 (선택)
                     </label>
                   </div>

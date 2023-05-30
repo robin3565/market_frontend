@@ -159,3 +159,83 @@ export const requestStoreData = (name) => {
     const data = gwangju_store.filter((store) => store["시장명"] === name);
     return data;
 }
+
+// 카카오 로그인 중복 확인
+export const checkKakaoDuplicate = async (response) => {
+    try {
+        const res = await axios.post(`${BACK_PATH}/kakaotalkDup`, response);
+        return res.data;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+
+}
+
+// 카카오 회원가입
+export const checkKakaoSignup = async (response) => {
+    try {
+        const res = await axios.post(`${BACK_PATH}/kakaotalkJoin`, response);
+        return res.data;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+
+}
+
+// 아이디 찾기
+export const requestForgetId = async (param) => {
+    const params = {
+        ...param,
+    }
+    try {
+        const res = await axios.post(`${BACK_PATH}/forgetId`, params, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        return res.data;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+}
+
+// 비밀번호 찾기
+export const requestForgetPw = async (param) => {
+    const params = {
+        ...param,
+    }
+    try {
+        const res = await axios.post(`${BACK_PATH}/forgetPw`, params, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        return res.data;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+}
+
+
+// 비밀번호 바꾸기
+export const requestModPw = async (param) => {
+    const params = {
+        ...param,
+    }
+    try {
+        const res = await axios.post(`${BACK_PATH}/modPw`, params, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        return res.data;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+
+}

@@ -115,7 +115,6 @@ const Signup = () => {
       } else if (res === "none") {
         setDuplicate(false);
       }
-      console.log(res);
     }
   }, 300);
 
@@ -138,7 +137,6 @@ const Signup = () => {
       } else if (res === "none") {
         setDuplicate(false);
       }
-      console.log(res);
     }
   }, 300);
 
