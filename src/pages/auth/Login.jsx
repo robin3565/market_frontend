@@ -73,7 +73,11 @@ const Login = () => {
           success: async (response) => {
             console.log("카카오 사용자 정보:", response);
             // test to Backend
-             await axios.post(`${BACK_PATH}/kakaotalk`, response);
+             await axios.post(`http://localhost:8085/kakaotalk`, response, {
+              headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+              }
+          });
 
             setAccountInfo({
               ...accountInfo,
