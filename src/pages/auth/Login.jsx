@@ -4,6 +4,8 @@ import useCheckbox from "../../hooks/useCheckbox";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { postLogin } from "../../utils/requestList";
+import axios from "axios";
+import { BACK_PATH } from "../../config/config_home";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -60,7 +62,7 @@ const Login = () => {
   const handleKakaoLogin = () => {
     setViewStep({ first: true, second: false });
     // 카카오 로그인 처리
-    window.Kakao.Auth.login({
+     window.Kakao.Auth.login({
       success: (authObj) => {
         console.log("카카오 로그인 성공:", authObj);
         setAuth_Object(authObj);
@@ -68,8 +70,11 @@ const Login = () => {
         // 사용자 정보 가져오기
         window.Kakao.API.request({
           url: "/v2/user/me",
-          success: (response) => {
+          success: async (response) => {
             console.log("카카오 사용자 정보:", response);
+            // test to Backend
+             await axios.post(`${BACK_PATH}/kakaotalk`, response);
+
             setAccountInfo({
               ...accountInfo,
               id: response?.kakao_account?.email,
@@ -150,8 +155,7 @@ const Login = () => {
                           autoComplete="id"
                           placeholder="아이디"
                           required
-                          className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1 ring-inset 
-                    ring-gray-300 placeholder:text-gray-400"
+                          className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           onChange={handleInputChange}
                         />
                       </div>
@@ -167,8 +171,7 @@ const Login = () => {
                           placeholder="비밀번호"
                           required
                           value={inputs.password}
-                          className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                          className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           onChange={handleInputChange}
                         />
                       </div>
@@ -231,8 +234,7 @@ const Login = () => {
                       type="text"
                       disabled={true}
                       value={accountInfo.id}
-                      className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                      className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                   </div>
                   <div className="mt-2">
@@ -244,8 +246,7 @@ const Login = () => {
                       autoComplete="nickname"
                       placeholder="닉네임"
                       required
-                      className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                      className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       onChange={(e) =>
                         setAccountInfo({
                           ...accountInfo,

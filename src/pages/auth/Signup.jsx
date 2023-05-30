@@ -154,7 +154,7 @@ const Signup = () => {
   }, [watch("email")]);
 
   return (
-    <div className="w-full h-full flex flex-col items-center mx-auto md:my-24 my-8">
+    <div className="w-full h-screen flex flex-col items-center mx-auto md:my-24 my-8">
       <div className="flex items-center justify-center mb-5">
         {/* <Logo size={"big"} /> */}
         <h3 className="font-bold text-3xl">회원가입</h3>
@@ -178,9 +178,7 @@ const Signup = () => {
                   aria-invalid={
                     !isDirty ? undefined : errors.id ? "true" : "false"
                   }
-                  className="block w-full border-0 py-3 pl-4 
-                  text-gray-900 shadow-sm ring-1 ring-inset 
-                    ring-gray-300 placeholder:text-gray-400"
+                  className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   {...register("id", {
                     required: "아이디는 필수 입력입니다.",
                     pattern: {
@@ -216,8 +214,7 @@ const Signup = () => {
                   aria-invalid={
                     !isDirty ? undefined : errors.password ? "true" : "false"
                   }
-                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                  className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   {...register("password", {
                     required: "비밀번호는 필수 입력입니다.",
                     pattern: {
@@ -247,8 +244,7 @@ const Signup = () => {
                   autoComplete="current-password-confirm"
                   placeholder="비밀번호 확인 (8자 이상)"
                   required
-                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                  className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   {...register("password_confirm")}
                 />
               </div>
@@ -267,8 +263,7 @@ const Signup = () => {
                   autoComplete="current-nickname"
                   placeholder="닉네임 (필수)"
                   required
-                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                  className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   {...register("nickname")}
                 />
               </div>
@@ -281,8 +276,7 @@ const Signup = () => {
                   type="email"
                   autoComplete="current-email"
                   placeholder="이메일 (필수)"
-                  className="block w-full border-0 py-3 pl-4 text-gray-900 shadow-sm ring-1
-                     ring-inset ring-gray-300 placeholder:text-gray-400"
+                  className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   {...register("email", {
                     required: "이메일은 필수 입력입니다.",
                     pattern: {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { HOME_PATH } from "../config/config_home";
 import { Navigation, Pagination } from "swiper";
@@ -6,6 +6,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { handleNextClick, handlePrevClick } from "../utils/events";
 
 const Home = () => {
+  const [slidesPerView, setSlidesPerView] = useState(3);
+
   useEffect(() => {
     const prevButton = document.querySelector(".swiper-button-prev");
     const nextButton = document.querySelector(".swiper-button-next");
@@ -15,6 +17,24 @@ const Home = () => {
     return () => {
       prevButton.removeEventListener("click", handlePrevClick);
       nextButton.removeEventListener("click", handleNextClick);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setSlidesPerView(1);
+      } else {
+        setSlidesPerView(3);
+      }
+    };
+
+    handleResize(); // Call it initially
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -180,7 +200,7 @@ const Home = () => {
             </p>
           </div>
           <div className="flex w-full mt-8">
-            <Swiper slidesPerView={3} navigation>
+            <Swiper slidesPerView={slidesPerView} navigation>
               <SwiperSlide>
                 <Link to="/curation/yangdong">
                   <div
