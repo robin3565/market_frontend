@@ -30,6 +30,7 @@ const FindId = () => {
       });
       if (res.result === "success") {
         setVerifiedNum(res.numbers);
+        toast.success("인증번호가 이메일로 발송되었습니다.")
       } else {
         toast.error("이메일을 다시 확인해주세요.");
         return;
@@ -43,7 +44,7 @@ const FindId = () => {
 
   // 인증번호 확인
   const handleVerify = async () => {
-    if (verified.length !== 0 && verified.trim().length !== 0) {
+    if (verified.length === 0 || verified.trim().length === 0) {
       toast.error("인증번호를 입력해주세요.");
       return false;
     }

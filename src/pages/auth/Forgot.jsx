@@ -6,7 +6,7 @@ import {
   sendEmail,
 } from "../../utils/requestList";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Forgot = () => {
   const [{ id, email, verified, pw, confirm_pw }, handleInputChange] =
@@ -17,6 +17,8 @@ const Forgot = () => {
       pw: "",
       confirm_pw: "",
     });
+
+  const navigate = useNavigate();
   const [verifiedNum, setVerifiedNum] = useState("");
   const [view, setView] = useState(false);
   const [finded, setFinded] = useState(false);
@@ -30,23 +32,26 @@ const Forgot = () => {
   const validatePw = (password) => {
     const regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]+$/;
     return regex.test(password);
-  }
+  };
 
   const handleFindPassword = async () => {
     const isValidEmail = validateEmail(email);
     if (isValidEmail) {
-      setView(true);
       if (id.length !== 0 && id.trim().length !== 0) {
+        setView(true);
         const email_ = email.trim();
         const id_ = id.trim();
         const res = await requestForgetPw({
           mem_id: id_,
           mem_email: email_,
         });
+        console.log(res);
         if (res.result === "success") {
           setVerifiedNum(res.numbers);
+          toast.success("인증번호가 이메일로 발송되었습니다.");
         } else {
-          toast.error("이메일을 다시 확인해주세요.");
+          setView(false);
+          toast.error("입력하신 아이디, 이메일이 옳지 않습니다.");
           return;
         }
       } else {
@@ -62,7 +67,7 @@ const Forgot = () => {
 
   // 인증번호 확인
   const handleVerify = async () => {
-    if (verified.length !== 0 && verified.trim().length !== 0) {
+    if (verified.length === 0 || verified.trim().length === 0) {
       toast.error("인증번호를 입력해주세요.");
       return false;
     }
@@ -74,17 +79,48 @@ const Forgot = () => {
 
   // 비밀번호 변경
   const handleChangePw = async () => {
-    if(pw !== confirm_pw) {
+    if (pw !== confirm_pw) {
       toast.error("비밀번호 확인이 일치하지 않습니다.");
       return;
     }
 
-    const isValidPw = validatePw(pw);
-    if(isValidPw) {
-      
+    if (pw.length === 0 || pw.trim().length === 0) {
+      toast.error("비밀번호를 입력해주세요.");
+      return;
     }
 
-  }
+    if (pw.length < 8 || pw.trim().length < 8) {
+      toast.error("비밀번호는 8자리 이상 입력해주세요.");
+      return;
+    }
+
+    if (confirm_pw.length === 0 || confirm_pw.trim().length === 0) {
+      toast.error("비밀번호 확인을 입력해주세요.");
+      return;
+    }
+
+    const isValidPw = validatePw(pw);
+    if (isValidPw) {
+      console.log("dadasds");
+      const email_ = email.trim();
+      const id_ = id.trim();
+      const pw_ = pw.trim();
+
+      const res_ = await requestModPw({
+        mem_email: email_,
+        mem_id: id_,
+        mem_pw: pw_,
+      });
+
+      if (res_.result === "success") {
+        toast.success("비밀번호가 변경 되었습니다.");
+        navigate("/login");
+      }
+      console.log(res_);
+    } else {
+      toast.error("비밀번호는 영문자와 숫자를 반드시 포함해야합니다.");
+    }
+  };
 
   return (
     <div className="md:w-1/3 lg:w-1/4 w-full flex flex-col md:py-24 py-8 h-screen">
@@ -104,6 +140,7 @@ const Forgot = () => {
                   <input
                     placeholder="새 비밀번호"
                     name="pw"
+                    type="password"
                     className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={pw}
                     onChange={handleInputChange}
@@ -115,6 +152,7 @@ const Forgot = () => {
                   <input
                     placeholder="새 비밀번호 확인"
                     name="confirm_pw"
+                    type="password"
                     className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={confirm_pw}
                     onChange={handleInputChange}
