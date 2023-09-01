@@ -12,5 +12,3 @@
 
 ## 프로젝트 소개
 ### **[시장275 바로가기 👉](http://market275.site/)**
-
-### **[시장275 Github 페이지](https://github.com/robin3565/market_frontend)**
